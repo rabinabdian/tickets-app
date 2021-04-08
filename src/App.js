@@ -6,7 +6,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import Nav from "./components/Nav";
-import LandingPage from "./components/LandingPage";
+import HomePage from "./components/HomePage";
 import ProtectedRoute from "./ProtectedRoute";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -15,9 +15,6 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 
 function App() {
-  const { isLoggedIn } = useSelector(state => state);
-  const dispatch = useDispatch();
-
   return (
     <Router>
       <div className="App">
@@ -25,7 +22,7 @@ function App() {
         <Switch>
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
-          <ProtectedRoute path="/" exact component={LandingPage} />
+          <ProtectedRoute path="/" exact component={HomePage} />
           <Route path="*" component={() => <Redirect to="/" />} />
         </Switch>
         {/* {isLoggedIn ? (

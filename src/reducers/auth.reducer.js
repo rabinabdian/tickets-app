@@ -14,6 +14,11 @@ const loggedIn = (state = { isLoggedIn: false }, action) => {
         ...state,
         isLoggedIn: false,
       };
+    case actionsType.LOGOUT:
+      return {
+        ...state,
+        isLoggedIn: false,
+      };
 
     default:
       return state;

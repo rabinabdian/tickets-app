@@ -52,6 +52,9 @@ export default function Signup(props) {
     if (response && response.status > 200) {
       setGeneralErrors(response.message);
     }
+    return () => {
+      setLoading(false);
+    };
   }, [response]);
 
   return isLoggedIn || localStorage.getItem("token") ? (

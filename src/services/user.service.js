@@ -16,10 +16,10 @@ export const signup = dispatch => async ({ email, password }) => {
   });
 
   if (response?.status > 300) {
-    return dispatch({ type: authActionTypes.SIGNUP_FAIL, response });
+    return await dispatch({ type: authActionTypes.SIGNUP_FAIL, response });
   } else {
     localStorage.setItem("token", "token");
-    return dispatch(authActions.signup({ response }));
+    return await dispatch(authActions.signup({ response }));
   }
 };
 
@@ -32,15 +32,14 @@ export const login = dispatch => async ({ email, password }) => {
   });
 
   if (response?.status > 200) {
-    return dispatch({ type: authActionTypes.LOGIN_FAIL, response });
+    return await dispatch({ type: authActionTypes.LOGIN_FAIL, response });
   } else {
     localStorage.setItem("token", "token");
-    return dispatch(authActions.login({ response }));
+    return await dispatch(authActions.login({ response }));
   }
 };
 
-export const logout = () => {
-  console.log("logout");
-  localStorage.removeItem("token", "token");
-  return 200;
+export const logout = async dispatch => {
+  localStorage.removeItem("token");
+  return await dispatch(authActions.logout());
 };

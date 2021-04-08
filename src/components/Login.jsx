@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-
-import * as authActions from "../actions/auth.action";
 import "./styles/loginForm.scss";
 
 import { login } from "../services/user.service";
@@ -33,7 +31,9 @@ export default function Login(props) {
     if (response && response.status > 200) {
       setGeneralErrors(response.message);
     }
-    return () => {};
+    return () => {
+      setLoading(false);
+    };
   }, [response]);
 
   return isLoggedIn || localStorage.getItem("token") ? (
