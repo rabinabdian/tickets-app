@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
+import * as authActions from "../actions/auth.action";
 import "./styles/loginForm.scss";
+
+import { signup } from "../services/user.service";
 
 const signUpSchema = yup.object().shape({
   email: yup.string().email().required(),
@@ -28,18 +33,36 @@ const signUpSchema = yup.object().shape({
   }),
 });
 
-export default function Signup() {
+export default function Signup(props) {
+  const [generalErorrs, setGeneralErrors] = useState("");
+  const [response, setResponse] = useState();
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector(state => state);
+
   const handleSignUp = values => {
-    console.log(values);
+    setLoading(true);
+    signup(dispatch)(values)
+      .then(res => setResponse(res))
+      .finally(() => setLoading(false));
   };
 
-  return (
-    <div className="d-flex justify-content-center align-items-start w-100">
+  useEffect(() => {
+    if (response && response.status > 200) {
+      setGeneralErrors(response.message);
+    }
+  }, [response]);
+
+  return isLoggedIn || localStorage.getItem("token") ? (
+    <Redirect to="/" />
+  ) : (
+    <div className="d-flex justify-content-center align-items-start w-100 h-100">
       <Formik
         initialValues={{
           email: "",
-          password: "",
-          passwordConfirmation: "",
+          password: "Aaaaaa1!",
+          passwordConfirmation: "Aaaaaa1!",
         }}
         validationSchema={signUpSchema}
         onSubmit={values => handleSignUp(values)}
@@ -52,7 +75,11 @@ export default function Signup() {
                 <div className="form-label">
                   <h4>Email</h4>
                 </div>
-                <Field name="email" className="form-control login-form-field" />
+                <Field
+                  name="email"
+                  className="form-control login-form-field"
+                  disabled={loading}
+                />
                 {errors.email && touched.email && (
                   <div className="alert text-danger p-0 form-error">
                     {errors.email}
@@ -67,6 +94,7 @@ export default function Signup() {
                   name="password"
                   type="password"
                   className="form-control login-form-field"
+                  disabled={loading}
                 />
                 {errors.password && touched.password && (
                   <div className="alert text-danger p-0 form-error">
@@ -82,6 +110,7 @@ export default function Signup() {
                   name="passwordConfirmation"
                   type="password"
                   className="form-control login-form-field"
+                  disabled={loading}
                 />
                 {errors.passwordConfirmation &&
                   touched.passwordConfirmation && (
@@ -91,12 +120,26 @@ export default function Signup() {
                   )}
               </div>
 
-              <button
-                type="submit"
-                className="btn btn-primary w-50 login-form-submit"
-              >
-                Sign up
-              </button>
+              <div className="d-flex flex-column align-items-center">
+                <div className="alert text-danger p-0 form-error">
+                  {generalErorrs}
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-primary w-50 mb-3"
+                  disabled={loading}
+                >
+                  Sign up
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary w-50 "
+                  onClick={() => props.history.push("/login")}
+                  disabled={loading}
+                >
+                  Back
+                </button>
+              </div>
             </div>
           </Form>
         )}

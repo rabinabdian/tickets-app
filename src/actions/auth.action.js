@@ -2,18 +2,27 @@ import {
   login as apiLogin,
   logout as apiLogout,
 } from "../services/user.service";
+import * as actionsType from "./auth.actionTypes";
 
-export const LOGIN = "LOGIN";
-export const LOGOUT = "LOGOUT";
-
-export const login = (email = "", password = "") => {
+export const signup = ({ response = "" }) => {
   // TODO fetch token for email and password
-  const token = apiLogin(email, password);
+  // const response = apiLogin(email, password);
+
+  // console.log(email, password);
   return {
-    type: LOGIN,
-    payload: {
-      token,
-    },
+    type: actionsType.SIGNUP,
+    response,
+  };
+};
+
+export const login = ({ response = "" }) => {
+  // TODO fetch token for email and password
+  // const response = apiLogin(email, password);
+
+  // console.log(email, password);
+  return {
+    type: actionsType.LOGIN,
+    response,
   };
 };
 
@@ -21,6 +30,6 @@ export const logout = () => {
   // TODO delete the token from local storage
   apiLogout();
   return {
-    type: LOGOUT,
+    type: actionsType.LOGOUT,
   };
 };

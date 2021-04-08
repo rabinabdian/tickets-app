@@ -9,7 +9,11 @@ export default function ProtectedRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props =>
-        isLoggedIn ? <Component {...props} /> : <Redirect to="/" />
+        isLoggedIn || localStorage.getItem("token") ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/login" />
+        )
       }
     />
   );

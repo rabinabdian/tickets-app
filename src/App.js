@@ -10,7 +10,6 @@ import LandingPage from "./components/LandingPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 import { useSelector, useDispatch } from "react-redux";
-import * as authActions from "./actions/auth.action";
 
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -22,7 +21,13 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Login />
+        <ProtectedRoute path="/" component={Nav} />
+        <Switch>
+          <Route path="/login" exact component={Login} />
+          <Route path="/signup" exact component={Signup} />
+          <ProtectedRoute path="/" exact component={LandingPage} />
+          <Route path="*" component={() => <Redirect to="/" />} />
+        </Switch>
         {/* {isLoggedIn ? (
           <button
             className="btn btn-primary"

@@ -1,4 +1,7 @@
 .App {
   text-align: center;
-  height: 100vh;
+  button {
+    border-radius: 2em;
+    min-width: 100px;
+  }
 }
