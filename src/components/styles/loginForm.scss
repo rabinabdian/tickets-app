@@ -1,0 +1,21 @@
+.login-form {
+  width: 350px;
+
+  .form-container {
+    border-radius: 2em;
+
+    .login-form-submit,
+    .login-form-field {
+      border-radius: 2em;
+    }
+
+    .login-form-submit {
+      font-weight: 900;
+    }
+
+    .form-error {
+      text-align: start;
+      margin-left: 1%;
+    }
+  }
+}
