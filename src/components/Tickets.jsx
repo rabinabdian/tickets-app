@@ -5,7 +5,7 @@ const lorem = "Lorem ipsum dolo5r sit amet consectetu5r adipisicing elit. Eni5m 
   "5"
 );
 
-const tickets = lorem.map(a => <Ticket title={a} />);
+const tickets = lorem.map((a, id) => <Ticket title={a} id={id} />);
 
 export default function Tickets() {
   return (

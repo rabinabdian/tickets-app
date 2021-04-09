@@ -4,7 +4,7 @@ import Tickets from "./Tickets";
 export default function LandingPage(props) {
   return (
     <>
-      <div>Home page</div>
+      <h3 className="mt-2">Home page</h3>
       <div className="container">
         <div className="row justify-content-center">
           <Tickets />

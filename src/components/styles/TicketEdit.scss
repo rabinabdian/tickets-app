@@ -1,0 +1,14 @@
+.ticket-edit-card {
+  width: 50vw;
+  min-height: 70vh;
+  height: auto;
+
+  // mobile
+  @media only screen and (max-width: 767px) {
+    & {
+      width: 80vw;
+      min-height: 60vh;
+      height: auto;
+    }
+  }
+}

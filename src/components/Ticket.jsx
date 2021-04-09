@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./styles/Ticket.scss";
 
-export default function Ticket({ title }) {
+export default function Ticket({ title, id }) {
+  const [bgColor, setBgColor] = useState("");
+
   return (
-    <div className="card" style={{ width: "20rem", height: "8rem" }}>
+    <div className="card" style={{ background: bgColor }}>
       <div className="card-body">
         <h4 className="card-title">{title}</h4>
       </div>
@@ -13,7 +17,11 @@ export default function Ticket({ title }) {
             delete
           </div> */}
           <div className="card-link text-primary d-flex flex-column">
-            <i className="fas fa-pencil-alt" />
+            <Link
+              to={{ pathname: `/ticket/edit/${id}`, ticket: { title, id } }}
+            >
+              <i className="fas fa-pencil-alt" />
+            </Link>
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
-import * as authActions from "../actions/auth.action";
 import "./styles/loginForm.scss";
 
 import { signup } from "../services/user.service";

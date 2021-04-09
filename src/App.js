@@ -5,12 +5,11 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import Nav from "./components/Nav";
-import HomePage from "./components/HomePage";
 import ProtectedRoute from "./ProtectedRoute";
 
-import { useSelector, useDispatch } from "react-redux";
-
+import Nav from "./components/Nav";
+import HomePage from "./components/HomePage";
+import TicketEdit from "./components/TicketEdit";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 
@@ -23,6 +22,11 @@ function App() {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           <ProtectedRoute path="/" exact component={HomePage} />
+          <ProtectedRoute
+            path="/ticket/edit/:id"
+            exact
+            component={TicketEdit}
+          />
           <Route path="*" component={() => <Redirect to="/" />} />
         </Switch>
         {/* {isLoggedIn ? (
