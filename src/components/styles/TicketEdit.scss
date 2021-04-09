@@ -12,22 +12,28 @@
     }
   }
 
-  .table {
-    border-style: hidden;
+  .input-group {
+    width: 100%;
+  }
 
-    .input-group {
-      width: 100%;
-    }
+  .priority-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 100em;
+    color: black;
+  }
 
-    .priority-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      height: 2.5rem;
-      width: 2.5rem;
-      border-radius: 100em;
-      color: black;
-    }
+  .read-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .control-btn {
+    width: 40%;
   }
 }

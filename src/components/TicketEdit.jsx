@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import "./styles/TicketEdit.scss";
+import PriorityPanel from "./editTicketsPanels/PriorityPanel";
 
 const editTicketSchema = yup.object().shape({
   title: yup.string().required(),
@@ -35,8 +36,8 @@ export default function TicketEdit({ location: { ticket } }) {
   }, []);
 
   return (
-    <div>
-      <h3 className="mt-2">Edit Ticket</h3>
+    <div className="h-100 p-3">
+      <h3 className="h-100">Edit Ticket</h3>
       <div className="d-flex justify-content-center">
         <div className="card ticket-edit-card shadow p-3 border-0">
           <Formik
@@ -53,8 +54,8 @@ export default function TicketEdit({ location: { ticket } }) {
             onSubmit={values => console.log(values)}
           >
             {({ errors, touched, values, setFieldValue }) => (
-              <Form className="form-container body d-flex flex-column align-items-start justify-content-around px-2 h-100">
-                <div className="w-100">
+              <Form className="form-container body d-flex flex-column align-items-start px-2 h-100">
+                <div className="w-100 mb-5">
                   <h5 className="form-label text-left ml-1">Title</h5>
                   <Field name="title" className="form-control" />
                   {errors.title && touched.title && (
@@ -63,7 +64,7 @@ export default function TicketEdit({ location: { ticket } }) {
                     </div>
                   )}
                 </div>
-                <div className="w-100">
+                <div className="w-100 mb-5">
                   <h5 className="form-label text-left ml-1">Body</h5>
                   <Field
                     name="body"
@@ -71,124 +72,48 @@ export default function TicketEdit({ location: { ticket } }) {
                     component="textarea"
                   />
                 </div>
+                <div className="w-100 mb-5">
+                  <h5 className="form-label text-left ml-1">Priority</h5>
+                  <PriorityPanel
+                    priority={priority}
+                    setFieldValue={setFieldValue}
+                    handlePriorityClick={handlePriorityClick}
+                  />
+                </div>
 
-                <table className="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td className="d-flex justify-content-around border-0">
-                        <div className="input-group d-flex justify-content-around">
-                          <Field
-                            id="priority"
-                            className="btn border priority-btn"
-                            type="button"
-                            value={"1"}
-                            style={
-                              priority === "1"
-                                ? {
-                                    background: "#4fb9fa",
-                                  }
-                                : null
-                            }
-                            onClick={event => {
-                              setFieldValue(
-                                "priority",
-                                handlePriorityClick(event)
-                              );
-                            }}
-                          />
-                          <Field
-                            id="priority"
-                            className="btn border priority-btn"
-                            type="button"
-                            value={"2"}
-                            style={
-                              priority === "2"
-                                ? {
-                                    background: "#42ef37",
-                                  }
-                                : null
-                            }
-                            onClick={event => {
-                              setFieldValue(
-                                "priority",
-                                handlePriorityClick(event)
-                              );
-                            }}
-                          />
-                          <Field
-                            id="priority"
-                            className="btn border priority-btn"
-                            type="button"
-                            value={"3"}
-                            style={
-                              priority === "3"
-                                ? {
-                                    background: "#f2ed06",
-                                  }
-                                : null
-                            }
-                            onClick={event => {
-                              setFieldValue(
-                                "priority",
-                                handlePriorityClick(event)
-                              );
-                            }}
-                          />
-                          <Field
-                            id="priority"
-                            className="btn border priority-btn"
-                            type="button"
-                            value={"4"}
-                            style={
-                              priority === "4"
-                                ? {
-                                    background: "#fe9800",
-                                  }
-                                : null
-                            }
-                            onClick={event => {
-                              setFieldValue(
-                                "priority",
-                                handlePriorityClick(event)
-                              );
-                            }}
-                          />
-                          <Field
-                            id="priority"
-                            className="btn border priority-btn"
-                            type="button"
-                            value={"5"}
-                            style={
-                              priority === "5"
-                                ? {
-                                    background: "#d81c1c",
-                                  }
-                                : null
-                            }
-                            onClick={event => {
-                              setFieldValue(
-                                "priority",
-                                handlePriorityClick(event)
-                              );
-                            }}
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        <Field name="read" className="form-control" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Field name="color" className="form-control" />
-                      </td>
-                      <td>
-                        <Field name="icon" className="form-control" />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <button type="submit">Save</button>
+                <div className="w-100 mb-5 d-flex justify-content-start align-items-center">
+                  <h5 className="form-label text-left ml-1">Read</h5>
+                  <Field
+                    name="read"
+                    type="checkbox"
+                    className="form-checkbox ml-3"
+                  />
+                </div>
+
+                <div className="w-100 mb-5">
+                  <h5 className="form-label text-left ml-1">Color</h5>
+                  <Field name="color" className="form-control" />
+                </div>
+
+                <div className="w-100 mb-5">
+                  <h5 className="form-label text-left ml-1">Icon</h5>
+                  <Field name="icon" className="form-control" />
+                </div>
+
+                <div className="d-flex justify-content-around w-100">
+                  <button
+                    className="btn btn-outline-secondary round-btn control-btn"
+                    type="submit"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="btn btn-primary round-btn control-btn"
+                    type="submit"
+                  >
+                    Save
+                  </button>
+                </div>
               </Form>
             )}
           </Formik>
