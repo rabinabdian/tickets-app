@@ -128,14 +128,14 @@ export default function Signup(props) {
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-primary w-50 mb-3"
+                  className="btn btn-primary w-50 mb-3 round-btn"
                   disabled={loading}
                 >
                   Sign up
                 </button>
                 <button
                   type="button"
-                  className="btn btn-outline-primary w-50 "
+                  className="btn btn-outline-primary w-50 round-btn"
                   onClick={() => props.history.push("/login")}
                   disabled={loading}
                 >

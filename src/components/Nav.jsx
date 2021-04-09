@@ -32,7 +32,7 @@ export default function Nav() {
         </Link>
         <div>
           <button
-            className="btn btn-outline-primary"
+            className="btn btn-outline-primary round-btn"
             onClick={() => handleLogout()}
             disabled={loading}
           >

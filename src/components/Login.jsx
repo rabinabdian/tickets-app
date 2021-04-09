@@ -93,7 +93,7 @@ export default function Login(props) {
               <div className="d-flex flex-column align-items-center">
                 <button
                   type="submit"
-                  className="btn btn-primary w-50 mb-3"
+                  className="btn btn-primary w-50 mb-3 round-btn"
                   disabled={loading}
                 >
                   Login
@@ -105,7 +105,7 @@ export default function Login(props) {
 
                 <div>dont have an acount?</div>
                 <button
-                  className="btn btn-outline-primary w-50"
+                  className="btn btn-outline-primary w-50 round-btn"
                   type="button"
                   onClick={() => props.history.push("/signup")}
                   disabled={loading}
