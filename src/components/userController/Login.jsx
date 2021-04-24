@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-import "./styles/loginForm.scss";
+import "../styles/loginForm.scss";
 
-import { login } from "../services/user.service";
+import { login } from "../../services/user.service";
 import { Redirect } from "react-router";
+import FormFieldContainer from "../formReusable/FormFieldContainer";
+import FormButton from "../formReusable/FormButton";
 
 const loginSchema = yup.object().shape({
   email: yup.string().email().required(),
@@ -22,9 +24,11 @@ export default function Login(props) {
 
   const handleLogin = values => {
     setLoading(true);
-    login(dispatch)(values)
-      .then(res => setResponse(res))
-      .finally(() => setLoading(false));
+    setResponse(
+      login(dispatch)(values)
+        .then(res => setResponse(res))
+        .finally(() => setLoading(false))
+    );
   };
 
   useEffect(() => {
@@ -47,38 +51,23 @@ export default function Login(props) {
       >
         {({ errors, touched, values }) => (
           <Form autoComplete="false" className="d-flex flex-column login-form">
-            <h2 className="text-center mb-3 mt-5">Login</h2>
-            <div className="shadow p-3 mb-5 bg-white form-container">
-              <div className="mb-3">
-                <div className="form-label">
-                  <h4>Email</h4>
-                </div>
-                <Field
-                  name="email"
-                  className="form-control login-form-field"
-                  disabled={loading}
-                />
-                {errors.email && touched.email && (
-                  <div className="alert text-danger p-0 form-error">
-                    {errors.email}
-                  </div>
-                )}
-              </div>
-              <div className="mb-3">
-                <div className="form-label">
-                  <h4>Password</h4>
-                </div>
-                <Field
-                  name="password"
-                  type={values.showPassword ? "text" : "password"}
-                  className="form-control login-form-field"
-                  disabled={loading}
-                />
-                {errors.password && touched.password && (
-                  <div className="alert text-danger p-0 form-error">
-                    {errors.password}
-                  </div>
-                )}
+            <div className="shadow p-4 mt-5 bg-white form-container">
+              <h2 className="text-center mb-2">Login</h2>
+              <FormFieldContainer
+                name="email"
+                loading={loading}
+                placeholder="Email"
+                errors={errors}
+                touched={touched}
+              />
+              <FormFieldContainer
+                name="password"
+                type={values.showPassword ? "text" : "password"}
+                loading={loading}
+                placeholder="Password"
+                errors={errors}
+                touched={touched}
+              >
                 <div className="form-check d-inline-flex">
                   <div className="form-check-label">show password</div>
                   <Field
@@ -88,30 +77,27 @@ export default function Login(props) {
                     disabled={loading}
                   />
                 </div>
-              </div>
+              </FormFieldContainer>
 
               <div className="d-flex flex-column align-items-center">
-                <button
-                  type="submit"
-                  className="btn btn-primary w-50 mb-3 round-btn"
-                  disabled={loading}
-                >
-                  Login
-                </button>
+                <FormButton
+                  type={"submit"}
+                  loading={loading}
+                  color={"btn-primary"}
+                  btnText={"Login"}
+                />
 
                 <div className="alert text-danger p-0 form-error">
                   {generalErorrs}
                 </div>
 
-                <div>dont have an acount?</div>
-                <button
-                  className="btn btn-outline-primary w-50 round-btn"
-                  type="button"
+                <div className="mb-1">dont have an acount?</div>
+                <FormButton
+                  loading={loading}
+                  color={"btn-outline-primary"}
+                  btnText={"Sign up"}
                   onClick={() => props.history.push("/signup")}
-                  disabled={loading}
-                >
-                  Sign up
-                </button>
+                />
               </div>
             </div>
           </Form>

@@ -1,10 +1,7 @@
 import * as actionsType from "./auth.actionTypes";
 
 export const signup = ({ response = "" }) => {
-  // TODO fetch token for email and password
-  // const response = apiLogin(email, password);
-
-  // console.log(email, password);
+  if (response) localStorage.setItem("token", response["token"]);
   return {
     type: actionsType.SIGNUP,
     response,
@@ -12,10 +9,7 @@ export const signup = ({ response = "" }) => {
 };
 
 export const login = ({ response = "" }) => {
-  // TODO fetch token for email and password
-  // const response = apiLogin(email, password);
-
-  // console.log(email, password);
+  if (response) localStorage.setItem("token", response["token"]);
   return {
     type: actionsType.LOGIN,
     response,

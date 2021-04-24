@@ -1,41 +1,31 @@
 import * as authActions from "../actions/auth.action";
 import * as authActionTypes from "../actions/auth.actionTypes";
+import * as api from "../api";
 
-// TODO .env !!!!
-const URL_PROTOCOL = "http";
-const URL_DOMAIN = "127.0.0.1";
-const URL_PORT = "8080";
-const URL = `${URL_PROTOCOL}://${URL_DOMAIN}:${URL_PORT}`;
-
-export const signup = dispatch => async ({ email, password }) => {
-  // TODO fetch call
-  const response = await new Promise(resolve => {
-    setTimeout(() => {
-      return resolve({ token: "token", status: 200, message: "success" });
-    }, 2000);
-  });
-
-  if (response?.status > 300) {
-    return await dispatch({ type: authActionTypes.SIGNUP_FAIL, response });
-  } else {
-    localStorage.setItem("token", "token");
+export const signup = dispatch => async user => {
+  const { passwordConfirmation, ...userToSend } = user;
+  try {
+    const response = await api.register(userToSend);
     return await dispatch(authActions.signup({ response }));
+  } catch (error) {
+    return await dispatch({
+      type: authActionTypes.SIGNUP_FAIL,
+      status: 409,
+      message: error,
+    });
   }
 };
 
-export const login = dispatch => async ({ email, password }) => {
-  // TODO fetch call
-  const response = await new Promise(resolve => {
-    setTimeout(() => {
-      return resolve({ token: "token", status: 200, message: "success" });
-    }, 2000);
-  });
-
-  if (response?.status > 200) {
-    return await dispatch({ type: authActionTypes.LOGIN_FAIL, response });
-  } else {
-    localStorage.setItem("token", "token");
+export const login = dispatch => async user => {
+  try {
+    const response = await api.login(user);
     return await dispatch(authActions.login({ response }));
+  } catch (error) {
+    return await dispatch({
+      type: authActionTypes.LOGIN_FAIL,
+      status: 401,
+      message: error,
+    });
   }
 };
 
