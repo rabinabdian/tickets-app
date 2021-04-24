@@ -22,11 +22,7 @@ function App() {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           <ProtectedRoute path="/" exact component={HomePage} />
-          <ProtectedRoute
-            path="/ticket/edit/:id"
-            exact
-            component={TicketEdit}
-          />
+          <ProtectedRoute path="/ticket/edit/" component={TicketEdit} />
           <Route path="*" component={() => <Redirect to="/" />} />
         </Switch>
         {/* {isLoggedIn ? (

@@ -1,4 +1,27 @@
 .card {
   width: 20rem;
   height: 8rem;
+  .btn-style:focus,
+  .btn-style:active {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .btn-style {
+    i:hover {
+      color: #88c1ff !important;
+    }
+  }
+  border-width: 0.5px;
+}
+
+.card-data:hover {
+  background: #88c1ff;
+  i {
+    color: black;
+  }
+
+  i:hover {
+    color: white;
+  }
 }

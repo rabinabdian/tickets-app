@@ -1,27 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getTickets } from "../api";
 import Ticket from "./Ticket";
+import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 
-const lorem = "Lorem ipsum dolo5r sit amet consectetu5r adipisicing elit. Eni5m velit cupiditate, magnam corrupti expedita ass5umenda non, alias praesentium lauda5ntium aliquam nostrum cul5pa. Dolor, nihil quos quia molestiae non ut repud5iandae.Lorem ipsum dolo5r sit amet consectetu5r adipisicing elit. Eni5m velit cupiditate, magnam corrupti expedita ass5umenda non, alias praesentium lauda5ntium aliquam nostrum cul5pa. Dolor, nihil quos quia molestiae non ut repud5iandae.Lorem ipsum dolo5r sit amet consectetu5r adipisicing elit. Eni5m velit cupiditate, magnam corrupti expedita ass5umenda non, alias praesentium lauda5ntium aliquam nostrum cul5pa. Dolor, nihil quos quia molestiae non ut repud5iandae.Lorem ipsum dolo5r sit amet consectetu5r adipisicing elit. Eni5m velit cupiditate, magnam corrupti expedita ass5umenda non, alias praesentium lauda5ntium aliquam nostrum cul5pa. Dolor, nihil quos quia molestiae non ut repud5iandae.Lorem ipsum dolo5r sit amet consectetu5r adipisicing elit. Eni5m velit cupiditate, magnam corrupti expedita ass5umenda non, alias praesentium lauda5ntium aliquam nostrum cul5pa. Dolor, nihil quos quia molestiae non ut repud5iandae.Lorem ipsum dolo5r sit amet consectetu5r adipisicing elit. Eni5m velit cupiditate, magnam corrupti expedita ass5umenda non, alias praesentium lauda5ntium aliquam nostrum cul5pa. Dolor, nihil quos quia molestiae non ut repud5iandae.ntium aliquam nostrum culntium aliquam nostrum cul".split(
-  "5"
-);
+export default function Tickets(props) {
+  const [tickets, setTickets] = useState();
+  const [response, setResponse] = useState();
+  const [errors, setErrors] = useState("");
+  const [lodaing, setLodaing] = useState(false);
 
-const tickets = lorem.map((a, id) => <Ticket title={a} id={id} />);
+  useEffect(() => {
+    setLodaing(true);
+    getTickets({ token: localStorage.getItem("token") })
+      .then(data => setResponse(data))
+      .catch(err => setResponse(err));
+  }, []);
 
-export default function Tickets() {
-  return (
+  useEffect(() => {
+    if (response?.status === 200) {
+      setTickets(response?.data);
+      setLodaing(false);
+    } else if (response?.status === 403) {
+      setErrors(<Redirect to="/" />);
+      localStorage.removeItem("token");
+    } else setErrors(response?.data);
+
+    return () => {
+      setLodaing(false);
+    };
+  }, [response]);
+
+  return !errors ? (
     <>
       <div className="col-md-offset-3 m-2">
         <div className="card" style={{ width: "20rem", height: "8rem" }}>
           <div className="card-body d-flex justify-content-center align-items-center">
-            <i className="fas fa-plus card-text fa-3x text-primary"></i>
+            <Link
+              className="btn btn-link btn-style"
+              to={{ pathname: `/ticket/edit/`, pageType: "create" }}
+            >
+              <i
+                className={`fas fa-plus card-text fa-3x text-${
+                  lodaing ? "muted" : "primary"
+                }`}
+              />
+            </Link>
           </div>
         </div>
       </div>
-      {tickets.map((ticket, index) => (
-        <div key={index} className="col-md-offset-3 m-2">
-          {ticket}
-        </div>
-      ))}
+
+      {!lodaing &&
+        tickets &&
+        tickets.map(ticket => (
+          <div key={ticket?.id} className="col-md-offset-3 m-2">
+            <Ticket ticket={ticket} id={ticket?.id} title={ticket?.title} />
+          </div>
+        ))}
     </>
+  ) : (
+    <div className="alert text-danger p-0 form-error ml-2">{errors}</div>
   );
 }

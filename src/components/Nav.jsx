@@ -5,17 +5,11 @@ import { logout } from "../services/user.service";
 
 export default function Nav() {
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(false);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     setLoading(true);
-    logout(dispatch)
-      .then(res => {
-        console.log(res);
-        setResponse(res);
-      })
-      .finally(() => setLoading(false));
+    logout(dispatch).finally(() => setLoading(false));
   };
 
   useEffect(() => {

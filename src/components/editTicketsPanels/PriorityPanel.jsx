@@ -5,6 +5,7 @@ export default function PriorityPanel({
   priority,
   setFieldValue,
   handlePriorityClick,
+  disabled,
 }) {
   const createPriorityButton = ({ value, color }) => {
     return (
@@ -23,6 +24,7 @@ export default function PriorityPanel({
         onClick={event => {
           setFieldValue("priority", handlePriorityClick(event));
         }}
+        disabled={disabled}
       />
     );
   };

@@ -25,7 +25,7 @@ const signUpSchema = yup.object().shape({
   password: yup
     .string()
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$/,
       //  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
       () => (
         <>
