@@ -7,6 +7,7 @@ import PriorityPanel from "./PriorityPanel";
 import { createTicket, editTicket, getTicket } from "../../api";
 import DeleteModal from "./DeleteModal";
 import { TwitterPicker } from "react-color";
+import Picker from "emoji-picker-react";
 
 const editTicketSchema = yup.object().shape({
   title: yup.string().required().max(60),
@@ -157,11 +158,24 @@ export default function TicketEdit({
                   </div>
 
                   <div className="w-100 mb-5">
-                    <h5 className="form-label text-left ml-1">Icon</h5>
-                    <Field
-                      name="icon"
-                      className="form-control"
-                      disabled={loading}
+                    <div className="d-flex">
+                      <h5 className="form-label text-left ml-1">Icon</h5>
+                      <Field
+                        name="icon"
+                        className="form-control ml-2 mb-2"
+                        disabled={loading}
+                        value={values.icon}
+                        style={{ width: "50px" }}
+                      />
+                    </div>
+                    <Picker
+                      onEmojiClick={(event, emojiObject) => {
+                        setFieldValue("icon", emojiObject?.emoji);
+                      }}
+                      disableSkinTonePicker={true}
+                      disableSearchBar={true}
+                      pickerStyle={{ width: "100%", height: "200px" }}
+                      disableAutoFocus={true}
                     />
                   </div>
 
