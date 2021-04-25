@@ -9,7 +9,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import Nav from "./components/Nav";
 import HomePage from "./components/HomePage";
-import TicketEdit from "./components/TicketEdit";
+import TicketEdit from "./components/editTicketsComponenets/TicketEdit";
 import Login from "./components/userController/Login";
 import Signup from "./components/userController/Signup";
 

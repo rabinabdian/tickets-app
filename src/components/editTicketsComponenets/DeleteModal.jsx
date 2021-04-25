@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { deleteTicket } from "../api";
+import { deleteTicket } from "../../api";
 
 export default function DeleteModal({ ticketId, history }) {
   const [modalView, setModalView] = useState(false);

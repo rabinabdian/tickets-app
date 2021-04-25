@@ -19,7 +19,7 @@ export default function Tickets(props) {
 
   useEffect(() => {
     if (response?.status === 200) {
-      setTickets(response?.data);
+      setTickets(response?.data.reverse());
       setLodaing(false);
     } else if (response?.status === 403) {
       setErrors(<Redirect to="/" />);

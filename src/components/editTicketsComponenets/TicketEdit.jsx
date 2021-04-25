@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import { Redirect } from "react-router-dom";
 import * as yup from "yup";
-import "./styles/TicketEdit.scss";
-import PriorityPanel from "./editTicketsPanels/PriorityPanel";
-import { createTicket, editTicket, getTicket } from "../api";
+import "../styles/TicketEdit.scss";
+import PriorityPanel from "./PriorityPanel";
+import { createTicket, editTicket, getTicket } from "../../api";
 import DeleteModal from "./DeleteModal";
+import { TwitterPicker } from "react-color";
 
 const editTicketSchema = yup.object().shape({
   title: yup.string().required().max(60),
@@ -21,6 +22,8 @@ export default function TicketEdit({
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState();
   const [errors, setErrors] = useState("");
+  const [colorPicked, setColorPicked] = useState(ticketData?.color);
+
   const path = pathname
     .split("/")
     .filter(c => c)
@@ -72,7 +75,10 @@ export default function TicketEdit({
       <h3 className="h-100">{path === "create" ? "Create" : "Edit"} Ticket</h3>
       {!errors ? (
         <div className="d-flex justify-content-center">
-          <div className="card ticket-edit-card shadow p-3 border-0">
+          <div
+            className="card ticket-edit-card p-3"
+            style={{ boxShadow: `0px 0px 6px 0px ${colorPicked}` }}
+          >
             <Formik
               initialValues={{
                 title: ticketData?.title || "",
@@ -141,10 +147,12 @@ export default function TicketEdit({
 
                   <div className="w-100 mb-5">
                     <h5 className="form-label text-left ml-1">Color</h5>
-                    <Field
-                      name="color"
-                      className="form-control"
-                      disabled={loading}
+                    <TwitterPicker
+                      onChange={(color, event) => {
+                        setFieldValue("color", color?.hex || "black");
+                        setColorPicked(color?.hex || "black");
+                      }}
+                      color={values?.color || "black"}
                     />
                   </div>
 
