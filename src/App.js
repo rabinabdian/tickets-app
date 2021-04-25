@@ -22,35 +22,14 @@ function App() {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           <ProtectedRoute path="/" exact component={HomePage} />
-          <ProtectedRoute path="/ticket/edit/" component={TicketEdit} />
+          <ProtectedRoute
+            exact
+            path="/ticket/edit/:id"
+            component={TicketEdit}
+          />
+          <ProtectedRoute exact path="/ticket/create" component={TicketEdit} />
           <Route path="*" component={() => <Redirect to="/" />} />
         </Switch>
-        {/* {isLoggedIn ? (
-          <button
-            className="btn btn-primary"
-            onClick={() => {
-              dispatch(authActions.logout());
-            }}
-          >
-            Logout
-          </button>
-        ) : (
-          <button
-            className="btn btn-primary"
-            onClick={() => {
-              dispatch(authActions.login("email", "pass"));
-            }}
-          >
-            Login
-          </button>
-        )} */}
-
-        {/* <Switch>
-          <Route path="/" exact component={LandingPage} />
-          <ProtectedRoute path="/login" component={Login} />
-          <ProtectedRoute path="/signup" component={Signup} />
-          <Route path="*" component={() => <Redirect to="/" />} />
-        </Switch> */}
       </div>
     </Router>
   );

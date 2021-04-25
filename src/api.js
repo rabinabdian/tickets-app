@@ -63,7 +63,6 @@ export const getTickets = async ({ token }) => {
       };
     })
     .catch(error => {
-      console.log(error.response);
       //error.response.data
       return {
         data: error?.response?.data["error_message"],
@@ -87,7 +86,6 @@ export const checkUser = async () => {
       };
     })
     .catch(error => {
-      console.log(error.response);
       //error.response.data
       return {
         data: error?.response?.data["error_message"],
@@ -112,7 +110,6 @@ export const createTicket = async (values = {}) => {
       status: 200,
     };
   } catch (error) {
-    console.log(error.response);
     return {
       data: error?.response?.data["error_message"],
       status: error.response.status,
@@ -121,7 +118,6 @@ export const createTicket = async (values = {}) => {
 };
 
 export const editTicket = async (values = {}) => {
-  console.log(values);
   const token = localStorage.getItem("token");
   try {
     const response = axios({
@@ -136,7 +132,46 @@ export const editTicket = async (values = {}) => {
       status: 200,
     };
   } catch (error) {
-    console.log(error.response);
+    return {
+      data: error?.response?.data["error_message"],
+      status: error.response.status,
+    };
+  }
+};
+
+export const getTicket = async id => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${URL}/ticket/${id}`,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return {
+      data: response?.data,
+      status: 200,
+    };
+  } catch (error) {
+    return {
+      data: error?.response?.data["error_message"],
+      status: error.response.status,
+    };
+  }
+};
+
+export const deleteTicket = async id => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios({
+      method: "DELETE",
+      url: `${URL}/ticket/delete/${id}`,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return {
+      data: response?.data,
+      status: 200,
+    };
+  } catch (error) {
     return {
       data: error?.response?.data["error_message"],
       status: error.response.status,

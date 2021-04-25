@@ -38,7 +38,7 @@ export default function Tickets(props) {
           <div className="card-body d-flex justify-content-center align-items-center">
             <Link
               className="btn btn-link btn-style"
-              to={{ pathname: `/ticket/edit/`, pageType: "create" }}
+              to={{ pathname: `/ticket/create` }}
             >
               <i
                 className={`fas fa-plus card-text fa-3x text-${

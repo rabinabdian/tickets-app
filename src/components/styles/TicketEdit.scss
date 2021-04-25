@@ -36,4 +36,14 @@
   .control-btn {
     width: 40%;
   }
+
+  .modal-backdrop {
+    background-color: rgba(100, 100, 100, 0.8);
+    width: 100vw;
+    height: 100vh;
+
+    .modal-dialog {
+      min-width: 35%;
+    }
+  }
 }
