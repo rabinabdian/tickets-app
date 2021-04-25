@@ -12,6 +12,7 @@ import HomePage from "./components/HomePage";
 import TicketEdit from "./components/editTicketsComponenets/TicketEdit";
 import Login from "./components/userController/Login";
 import Signup from "./components/userController/Signup";
+import TicketView from "./components/TicketView";
 
 function App() {
   return (
@@ -28,6 +29,11 @@ function App() {
             component={TicketEdit}
           />
           <ProtectedRoute exact path="/ticket/create" component={TicketEdit} />
+          <ProtectedRoute
+            exact
+            path="/ticket/view/:id"
+            component={TicketView}
+          />
           <Route path="*" component={() => <Redirect to="/" />} />
         </Switch>
       </div>

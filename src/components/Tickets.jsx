@@ -31,21 +31,25 @@ export default function Tickets(props) {
     };
   }, [response]);
 
-  return !errors ? (
+  return !lodaing || !errors ? (
     <>
       <div className="col-md-offset-3 m-2">
         <div className="card" style={{ width: "20rem", height: "8rem" }}>
           <div className="card-body d-flex justify-content-center align-items-center">
-            <Link
-              className="btn btn-link btn-style"
-              to={{ pathname: `/ticket/create` }}
-            >
-              <i
-                className={`fas fa-plus card-text fa-3x text-${
-                  lodaing ? "muted" : "primary"
-                }`}
-              />
-            </Link>
+            {lodaing ? (
+              <div className="spinner-grow text-primary" role="status" />
+            ) : (
+              <Link
+                className="btn btn-link btn-style"
+                to={{ pathname: `/ticket/create` }}
+              >
+                <i
+                  className={`fas fa-plus card-text fa-3x text-${
+                    lodaing ? "muted" : "primary"
+                  }`}
+                />
+              </Link>
+            )}
           </div>
         </div>
       </div>
