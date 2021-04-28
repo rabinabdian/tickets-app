@@ -113,9 +113,33 @@ export default function TicketEdit({ match, history }) {
                   />
                 </div>
 
-                <div className="w-100 mb-5">
-                  <h5 className="form-label text-left ml-1">Color</h5>
+                <div className="d-flex w-100 mb-5 align-items-center">
+                  <h5
+                    className="form-label text-left font-weight-bold ml-1"
+                    style={{ color: colorPicked }}
+                  >
+                    Color
+                  </h5>
                   <TwitterPicker
+                    className="ml-4"
+                    width="100%"
+                    triangle="hide"
+                    colors={[
+                      "#ac0000",
+                      "#EB144C",
+                      "#FF6900",
+                      "#FCB900",
+                      "#FFF200",
+                      "#a5dc7b",
+                      "#00D084",
+                      "#afffff",
+                      "#8ED1FC",
+                      "#0693E3",
+                      "#ABB8C3",
+                      "#F78DA7",
+                      "#9900EF",
+                      "#000000",
+                    ]}
                     onChange={(color, event) => {
                       setFieldValue("color", color?.hex || "black");
                       setColorPicked(color?.hex || "black");

@@ -2,28 +2,15 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-import {
-  fetchTickets,
-  selectTicketIds,
-  selectTicketById,
-} from "./ticketsSlice";
+import { fetchTickets, selectAllTickets } from "./ticketsSlice";
 
 import Ticket from "./Ticket";
-
-let TicketExcerpt = ({ ticketId }) => {
-  const ticket = useSelector(state => selectTicketById(state, ticketId));
-  return (
-    <div key={ticketId} className="col-md-offset-3 m-2">
-      <Ticket ticket={ticket} id={ticketId} title={ticket?.title} />
-    </div>
-  );
-};
 
 export default function TicketsList() {
   console.log("TicketsList render");
   const dispatch = useDispatch();
 
-  const orderedTicketsIds = useSelector(selectTicketIds);
+  const tickets = useSelector(selectAllTickets);
 
   const ticketsStatus = useSelector(state => state.tickets.status);
   const error = useSelector(state => state.tickets.error);
@@ -39,8 +26,10 @@ export default function TicketsList() {
   if (ticketsStatus === "loading") {
     content = <div>Loading...</div>; // TODO center a spinner
   } else if (ticketsStatus === "succeeded") {
-    content = orderedTicketsIds.map(ticketId => (
-      <TicketExcerpt key={ticketId} ticketId={ticketId} />
+    content = tickets.map(ticket => (
+      <div key={ticket.id} className="col-md-offset-3 m-2">
+        <Ticket ticket={ticket} title={ticket.title} />
+      </div>
     ));
   } else if (ticketsStatus === "failed") {
     content = <div>{error}</div>;

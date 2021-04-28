@@ -17,7 +17,7 @@ import LandingPage from "./components/LandingPage";
 import TicketEdit from "./features/tickets/ticketEdit/TicketEdit";
 import Login from "./features/user/Login";
 import Signup from "./features/user/Signup";
-import TicketView from "./components/TicketView";
+import TicketView from "./features/tickets/TicketView";
 
 function App() {
   console.log("App render");
@@ -39,7 +39,7 @@ function App() {
           <ProtectedRoute exact path="/ticket/create" component={TicketEdit} />
           <ProtectedRoute
             exact
-            path="/ticket/view/:id"
+            path="/ticket/view/:ticketId"
             component={TicketView}
           />
           <Route path="*" component={() => <Redirect to="/" />} />

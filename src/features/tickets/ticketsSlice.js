@@ -111,7 +111,7 @@ const ticketSlice = createSlice({
 export default ticketSlice.reducer;
 
 export const {
-  selectAll: selectAllPosts,
+  selectAll: selectAllTickets,
   selectIds: selectTicketIds,
   selectById: selectTicketById,
 } = ticketsAdapter.getSelectors(state => state.tickets);
