@@ -8,7 +8,9 @@ const URL = `${URL_PROTOCOL}://${URL_DOMAIN}:${URL_PORT}`;
 const isHttpsStatusOK = status => status >= 200 && status < 300;
 
 export async function api(endpoint, { body, method } = {}) {
+  // TODO localstorage expensive!!!!!!! have to store the token in store and use it from there
   const token = localStorage.getItem("token");
+  if (method === "GET" && !token) return null;
   const headers = { "Content-Type": "application/json" };
 
   const config = {

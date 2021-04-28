@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
-import "../styles/loginForm.scss";
+import { Redirect } from "react-router-dom";
 
-import { Redirect } from "react-router";
-import FormFieldContainer from "../formReusable/FormFieldContainer";
-import FormButton from "../formReusable/FormButton";
+import { loginUser, selectUser } from "./userSlice";
+
+import "./styles/loginForm.scss";
+
+import FormFieldContainer from "../../components/formReusable/FormFieldContainer";
+import FormButton from "../../components/formReusable/FormButton";
 
 const loginSchema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
 });
 
-export default function Login(props) {
-  const [generalErorrs, setGeneralErrors] = useState("");
-  const [loading, setLoading] = useState(false);
+export default function Login({ history }) {
+  console.log("Login render");
+  const dispatch = useDispatch();
 
   const handleLogin = values => {
-    setLoading(true);
+    dispatch(loginUser(values));
   };
 
-  useEffect(() => {
-    return () => {
-      setLoading(false);
-    };
-  }, []);
-
-  return localStorage.getItem("token") ? (
-    <Redirect to="/" />
-  ) : (
+  return (
     <div className="d-flex justify-content-center align-items-start w-100 h-100">
       <Formik
-        initialValues={{ email: "", password: "", showPassword: false }}
+        initialValues={{
+          email: "email@gmail.com",
+          password: "1234",
+          showPassword: false,
+        }}
         validationSchema={loginSchema}
         onSubmit={values => handleLogin(values)}
       >
@@ -41,7 +41,7 @@ export default function Login(props) {
               <h2 className="text-center mb-2">Login</h2>
               <FormFieldContainer
                 name="email"
-                loading={loading}
+                loading={false}
                 placeholder="Email"
                 errors={errors}
                 touched={touched}
@@ -49,7 +49,7 @@ export default function Login(props) {
               <FormFieldContainer
                 name="password"
                 type={values.showPassword ? "text" : "password"}
-                loading={loading}
+                loading={false}
                 placeholder="Password"
                 errors={errors}
                 touched={touched}
@@ -60,7 +60,7 @@ export default function Login(props) {
                     name="showPassword"
                     type="checkbox"
                     className="form-check-input"
-                    disabled={loading}
+                    disabled={false}
                   />
                 </div>
               </FormFieldContainer>
@@ -68,7 +68,7 @@ export default function Login(props) {
               <div className="d-flex flex-column align-items-center">
                 <FormButton
                   type={"submit"}
-                  loading={loading}
+                  loading={false}
                   color={"btn-primary"}
                   btnText={"Login"}
                 />
@@ -79,10 +79,10 @@ export default function Login(props) {
 
                 <div className="mb-1">dont have an acount?</div>
                 <FormButton
-                  loading={loading}
+                  loading={false}
                   color={"btn-outline-primary"}
                   btnText={"Sign up"}
-                  onClick={() => props.history.push("/signup")}
+                  onClick={() => history.push("/signup")}
                 />
               </div>
             </div>

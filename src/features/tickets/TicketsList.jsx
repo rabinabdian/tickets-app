@@ -20,6 +20,7 @@ let TicketExcerpt = ({ ticketId }) => {
 };
 
 export default function TicketsList() {
+  console.log("TicketsList render");
   const dispatch = useDispatch();
 
   const orderedTicketsIds = useSelector(selectTicketIds);

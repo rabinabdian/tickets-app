@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import "../styles/loginForm.scss";
 
-import FormFieldContainer from "../formReusable/FormFieldContainer";
-import FormButton from "../formReusable/FormButton";
+import { registerUser, selectUser } from "./userSlice";
+
+import "./styles/loginForm.scss";
+
+import FormFieldContainer from "../../components/formReusable/FormFieldContainer";
+import FormButton from "../../components/formReusable/FormButton";
 
 const signUpSchema = yup.object().shape({
   firstName: yup
@@ -43,22 +47,16 @@ const signUpSchema = yup.object().shape({
   }),
 });
 
-export default function Signup(props) {
-  const [loading, setLoading] = useState(false);
+// TODO to lower case the email in server !!!!
+export default function Signup({ history }) {
+  console.log("Signup render");
+  const dispatch = useDispatch();
 
   const handleSignUp = values => {
-    setLoading(true);
+    dispatch(registerUser(values));
   };
 
-  useEffect(() => {
-    return () => {
-      setLoading(false);
-    };
-  }, []);
-
-  return localStorage.getItem("token") ? (
-    <Redirect to="/" />
-  ) : (
+  return (
     <div className="d-flex justify-content-center align-items-start w-100 h-100">
       <Formik
         initialValues={{
@@ -77,21 +75,21 @@ export default function Signup(props) {
               <h2 className="text-center mb-2">Sign up</h2>
               <FormFieldContainer
                 name="firstName"
-                loading={loading}
+                loading={false}
                 placeholder="First name"
                 errors={errors}
                 touched={touched}
               />
               <FormFieldContainer
                 name="lastName"
-                loading={loading}
+                loading={false}
                 placeholder="Last name"
                 errors={errors}
                 touched={touched}
               />
               <FormFieldContainer
                 name="email"
-                loading={loading}
+                loading={false}
                 placeholder="Email"
                 errors={errors}
                 touched={touched}
@@ -99,7 +97,7 @@ export default function Signup(props) {
               <FormFieldContainer
                 name="password"
                 type="password"
-                loading={loading}
+                loading={false}
                 placeholder="Password"
                 errors={errors}
                 touched={touched}
@@ -107,7 +105,7 @@ export default function Signup(props) {
               <FormFieldContainer
                 name="passwordConfirmation"
                 type="password"
-                loading={loading}
+                loading={false}
                 placeholder="Confirm password"
                 errors={errors}
                 touched={touched}
@@ -119,15 +117,15 @@ export default function Signup(props) {
                 </div>
                 <FormButton
                   type={"submit"}
-                  loading={loading}
+                  loading={false}
                   color={"btn-primary"}
                   btnText={"Sign up"}
                 />
                 <FormButton
-                  loading={loading}
+                  loading={false}
                   color={"btn-outline-primary"}
                   btnText={"Back"}
-                  onClick={() => props.history.push("/login")}
+                  onClick={() => history.push("/login")}
                 />
               </div>
             </div>

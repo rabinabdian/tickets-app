@@ -1,0 +1,32 @@
+import React from "react";
+import { useSelector } from "react-redux";
+
+import TicketsList from "../features/tickets/TicketsList";
+import { selectUser } from "../features/user/userSlice";
+
+export default function LandingPage() {
+  const user = useSelector(selectUser);
+
+  return (
+    <>
+      <div className="d-flex ml-3 mt-1">
+        <h5>
+          {/* TODO remove after done */}
+          {user && (
+            <>
+              Hello{" "}
+              <span className="text-primary">{`${user.firstName} ${user.lastName}`}</span>
+            </>
+          )}
+        </h5>
+      </div>
+
+      <h3 className="mt-2">Home page</h3>
+      <div className="container">
+        <div className="row justify-content-center">
+          <TicketsList />
+        </div>
+      </div>
+    </>
+  );
+}
