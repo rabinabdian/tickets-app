@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Tickets from "./Tickets";
+import TicketsList from "../features/tickets/TicketsList";
 
-import { checkUser } from "../api";
-
-export default function LandingPage(props) {
+export default function LandingPage() {
   const [user, setUser] = useState();
   const [response, setResponse] = useState();
 
-  useEffect(() => {
-    checkUser()
-      .then(data => setResponse(data))
-      .catch(err => setResponse(err));
-  }, []);
+  // useEffect(() => {
+  //   checkUser()
+  //     .then(data => setResponse(data))
+  //     .catch(err => setResponse(err));
+  // }, []);
 
   useEffect(() => {
     if (response?.status === 200) setUser(response?.data);
@@ -34,7 +32,7 @@ export default function LandingPage(props) {
       <h3 className="mt-2">Home page</h3>
       <div className="container">
         <div className="row justify-content-center">
-          <Tickets />
+          <TicketsList />
         </div>
       </div>
     </>

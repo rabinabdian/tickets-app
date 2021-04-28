@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { getTicket } from "../api";
 
 export default function TicketView({
   location: { ticket, pathname },
@@ -16,9 +15,6 @@ export default function TicketView({
   useEffect(() => {
     if (!ticketData) {
       setLoading(true);
-      getTicket(path).then(data => {
-        setResponse(data);
-      });
     }
   }, [ticketData]);
 
@@ -62,7 +58,7 @@ export default function TicketView({
               <div className="d-flex w-100 align-items-center mb-5">
                 <h5 className="form-label text-left ml-1">is read?</h5>
                 <h6 className="ml-3 text-break">
-                  {ticketData?.isRead ? "yes" : "no"}
+                  {ticketData?.read ? "yes" : "no"}
                 </h6>
               </div>
 

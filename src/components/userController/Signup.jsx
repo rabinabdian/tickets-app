@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
@@ -7,8 +6,6 @@ import "../styles/loginForm.scss";
 
 import FormFieldContainer from "../formReusable/FormFieldContainer";
 import FormButton from "../formReusable/FormButton";
-
-import { signup } from "../../services/user.service";
 
 const signUpSchema = yup.object().shape({
   firstName: yup
@@ -47,32 +44,19 @@ const signUpSchema = yup.object().shape({
 });
 
 export default function Signup(props) {
-  const [generalErorrs, setGeneralErrors] = useState("");
-  const [response, setResponse] = useState();
   const [loading, setLoading] = useState(false);
-
-  const dispatch = useDispatch();
-  const { isLoggedIn } = useSelector(state => state);
 
   const handleSignUp = values => {
     setLoading(true);
-    setResponse(
-      signup(dispatch)(values)
-        .then(res => setResponse(res))
-        .finally(() => setLoading(false))
-    );
   };
 
   useEffect(() => {
-    if (response && response.status > 200) {
-      setGeneralErrors(response.message);
-    }
     return () => {
       setLoading(false);
     };
-  }, [response]);
+  }, []);
 
-  return isLoggedIn || localStorage.getItem("token") ? (
+  return localStorage.getItem("token") ? (
     <Redirect to="/" />
   ) : (
     <div className="d-flex justify-content-center align-items-start w-100 h-100">
@@ -131,7 +115,7 @@ export default function Signup(props) {
 
               <div className="d-flex flex-column align-items-center">
                 <div className="alert text-danger p-0 form-error">
-                  {generalErorrs}
+                  errors view
                 </div>
                 <FormButton
                   type={"submit"}

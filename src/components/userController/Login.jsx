@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
-import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import "../styles/loginForm.scss";
 
-import { login } from "../../services/user.service";
 import { Redirect } from "react-router";
 import FormFieldContainer from "../formReusable/FormFieldContainer";
 import FormButton from "../formReusable/FormButton";
@@ -16,31 +14,19 @@ const loginSchema = yup.object().shape({
 
 export default function Login(props) {
   const [generalErorrs, setGeneralErrors] = useState("");
-  const [response, setResponse] = useState();
   const [loading, setLoading] = useState(false);
-
-  const dispatch = useDispatch();
-  const { isLoggedIn } = useSelector(state => state);
 
   const handleLogin = values => {
     setLoading(true);
-    setResponse(
-      login(dispatch)(values)
-        .then(res => setResponse(res))
-        .finally(() => setLoading(false))
-    );
   };
 
   useEffect(() => {
-    if (response && response.status > 200) {
-      setGeneralErrors(response.message);
-    }
     return () => {
       setLoading(false);
     };
-  }, [response]);
+  }, []);
 
-  return isLoggedIn || localStorage.getItem("token") ? (
+  return localStorage.getItem("token") ? (
     <Redirect to="/" />
   ) : (
     <div className="d-flex justify-content-center align-items-start w-100 h-100">
@@ -88,7 +74,7 @@ export default function Login(props) {
                 />
 
                 <div className="alert text-danger p-0 form-error">
-                  {generalErorrs}
+                  errors view
                 </div>
 
                 <div className="mb-1">dont have an acount?</div>

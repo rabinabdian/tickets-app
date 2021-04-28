@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { logout } from "../services/user.service";
 
 export default function Nav() {
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
 
   const handleLogout = () => {
     setLoading(true);
-    logout(dispatch).finally(() => setLoading(false));
   };
 
   useEffect(() => {

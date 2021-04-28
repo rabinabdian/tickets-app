@@ -1,180 +1,53 @@
 import axios from "axios";
 
-// TODO seprate by path
-
-// TODO .env !!!!
 const URL_PROTOCOL = "http";
 const URL_DOMAIN = "127.0.0.1";
 const URL_PORT = "8080";
 const URL = `${URL_PROTOCOL}://${URL_DOMAIN}:${URL_PORT}`;
 
-// TODO the both function pretty the same so need to combine them
-export const register = async user => {
-  return axios({
-    method: "POST",
-    url: `${URL}/user/register`,
-    data: {
-      ...user,
+const isHttpsStatusOK = status => status >= 200 && status < 300;
+
+export async function api(endpoint, { body, method } = {}) {
+  const token = localStorage.getItem("token");
+  const headers = { "Content-Type": "application/json" };
+
+  const config = {
+    method,
+    url: `${URL}${endpoint}`,
+    ...(body && { data: body }),
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${token}`,
     },
-  })
-    .then(response => {
-      return {
-        ...response.data,
-        status: response.status,
-      };
-    })
-    .catch(error => {
-      //error.response.data
-      throw error.response.data["error_message"];
-    });
-};
-
-// TODO the both function pretty the same so need to combine them
-export const login = async user => {
-  return axios({
-    method: "POST",
-    url: `${URL}/user/login`,
-    data: {
-      ...user,
-    },
-  })
-    .then(response => {
-      return {
-        ...response?.data,
-        status: response?.status,
-      };
-    })
-    .catch(error => {
-      //error.response.data
-      throw error?.response?.data["error_message"];
-    });
-};
-
-export const getTickets = async ({ token }) => {
-  return axios({
-    method: "GET",
-    url: `${URL}/ticket/all`,
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then(response => {
-      return {
-        data: response?.data,
-        status: 200,
-      };
-    })
-    .catch(error => {
-      //error.response.data
-      return {
-        data: error?.response?.data["error_message"],
-        status: error.response.status,
-      };
-    });
-};
-
-export const checkUser = async () => {
-  const token = localStorage.getItem("token");
-
-  return axios({
-    method: "GET",
-    url: `${URL}/user`,
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then(response => {
-      return {
-        data: response?.data,
-        status: 200,
-      };
-    })
-    .catch(error => {
-      //error.response.data
-      return {
-        data: error?.response?.data["error_message"],
-        status: error.response.status,
-      };
-    });
-};
-
-export const createTicket = async (values = {}) => {
-  const token = localStorage.getItem("token");
-
+  };
+  let data;
   try {
-    const response = axios({
-      method: "POST",
-      url: `${URL}/ticket/create`,
-      headers: { Authorization: `Bearer ${token}` },
-      data: { ...values },
-    });
+    const response = await axios(config);
+    data = response.data;
 
-    return {
-      data: response?.data,
-      status: 200,
-    };
+    if (isHttpsStatusOK(response.status)) {
+      return data;
+    }
+
+    throw new Error(response.statusText);
   } catch (error) {
-    return {
-      data: error?.response?.data["error_message"],
-      status: error.response.status,
-    };
+    console.error(error);
+    return Promise.reject(error.message ? error.message : data);
   }
+}
+
+api.get = function ({ endpoint }) {
+  return api(endpoint, { method: "GET" });
 };
 
-export const editTicket = async (values = {}) => {
-  const token = localStorage.getItem("token");
-  try {
-    const response = axios({
-      method: "PUT",
-      url: `${URL}/ticket/update`,
-      headers: { Authorization: `Bearer ${token}` },
-      data: { ...values },
-    });
-
-    return {
-      data: response?.data,
-      status: 200,
-    };
-  } catch (error) {
-    return {
-      data: error?.response?.data["error_message"],
-      status: error.response.status,
-    };
-  }
+api.post = function ({ endpoint, body }) {
+  return api(endpoint, { method: "POST", body });
 };
 
-export const getTicket = async id => {
-  const token = localStorage.getItem("token");
-  try {
-    const response = await axios({
-      method: "GET",
-      url: `${URL}/ticket/${id}`,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return {
-      data: response?.data,
-      status: 200,
-    };
-  } catch (error) {
-    return {
-      data: error?.response?.data["error_message"],
-      status: error.response.status,
-    };
-  }
+api.put = function ({ endpoint, body }) {
+  return api(endpoint, { method: "PUT", body });
 };
 
-export const deleteTicket = async id => {
-  const token = localStorage.getItem("token");
-  try {
-    const response = await axios({
-      method: "DELETE",
-      url: `${URL}/ticket/delete/${id}`,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return {
-      data: response?.data,
-      status: 200,
-    };
-  } catch (error) {
-    return {
-      data: error?.response?.data["error_message"],
-      status: error.response.status,
-    };
-  }
+api.delete = function ({ endpoint }) {
+  return api(endpoint, { method: "DELETE" });
 };

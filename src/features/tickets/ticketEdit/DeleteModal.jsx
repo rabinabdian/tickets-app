@@ -1,12 +1,18 @@
 import React, { useState } from "react";
-import { deleteTicket } from "../../api";
+import { useDispatch, useSelector } from "react-redux";
+
+import { deleteTicket } from "../ticketsSlice";
 
 export default function DeleteModal({ ticketId, history }) {
+  const dispatch = useDispatch();
+
   const [modalView, setModalView] = useState(false);
 
-  const handleDeleteTicket = async () => {
-    await deleteTicket(ticketId);
-    setModalView(false);
+  const ticketsStatus = useSelector(state => state.tickets.status);
+
+  const handleDeleteTicket = () => {
+    dispatch(deleteTicket(ticketId));
+    if (ticketsStatus === "succeeded") setModalView(false);
     history.push("/");
   };
 
