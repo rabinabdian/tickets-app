@@ -24,18 +24,25 @@ export default function TicketEdit({ match, history }) {
 
   let ticket = useSelector(state => selectTicketById(state, ticketId));
   const ticketsStatus = useSelector(state => state.tickets.status);
+  const [error, setError] = useState("");
 
   const [priority, setPriority] = useState(ticket?.priority?.toString());
   const [colorPicked, setColorPicked] = useState(ticket?.color);
+  const [loading, setLoading] = useState(ticket?.color);
 
-  const handleSubmit = values => {
-    dispatch(
+  const handleSubmit = async values => {
+    setLoading(true);
+    const result = await dispatch(
       isEdit
         ? updateTicket({ body: values, ticketId })
         : addNewTicket({ body: values })
     );
-
-    if (ticketsStatus === "succeeded") history.push("/");
+    setLoading(false);
+    if (result.error) {
+      setError(result.error.message);
+    } else if (ticketsStatus === "succeeded") {
+      history.push("/");
+    }
   };
 
   return (
@@ -73,7 +80,7 @@ export default function TicketEdit({ match, history }) {
                   <Field
                     name="title"
                     className="form-control"
-                    disabled={false}
+                    disabled={loading}
                   />
                   {errors.title && touched.title && (
                     <div className="alert text-danger p-0 m-0">
@@ -87,7 +94,7 @@ export default function TicketEdit({ match, history }) {
                     name="body"
                     className="form-control"
                     component="textarea"
-                    disabled={false}
+                    disabled={loading}
                   />
                 </div>
                 <div className="w-100 mb-5">
@@ -99,7 +106,7 @@ export default function TicketEdit({ match, history }) {
                       setPriority(value);
                       return value;
                     }}
-                    disabled={false}
+                    disabled={loading}
                   />
                 </div>
 
@@ -109,7 +116,7 @@ export default function TicketEdit({ match, history }) {
                     name="read"
                     type="checkbox"
                     className="form-checkbox ml-3"
-                    disabled={false}
+                    disabled={loading}
                   />
                 </div>
 
@@ -148,13 +155,13 @@ export default function TicketEdit({ match, history }) {
                   />
                 </div>
 
-                <div className="w-100 mb-5">
+                <div className="w-100 mb-4">
                   <div className="d-flex">
                     <h5 className="form-label text-left ml-1">Icon</h5>
                     <Field
                       name="icon"
                       className="form-control ml-2 mb-2"
-                      disabled={false}
+                      disabled={loading}
                       value={values.icon}
                       style={{ width: "50px" }}
                     />
@@ -168,21 +175,21 @@ export default function TicketEdit({ match, history }) {
                     pickerStyle={{ width: "100%", height: "200px" }}
                     disableAutoFocus={true}
                   />
+                  <div className="alert text-danger p-0 mt-5 h5">{error}</div>
                 </div>
-
                 <div className="d-flex justify-content-around w-100">
                   <button
                     className="btn btn-outline-secondary round-btn control-btn"
                     onClick={() => history.push("/")}
                     type="button"
-                    disabled={false}
+                    disabled={loading}
                   >
                     Cancel
                   </button>
                   <button
                     className="btn btn-primary round-btn control-btn"
                     type="submit"
-                    disabled={false}
+                    disabled={loading}
                   >
                     Save
                   </button>

@@ -22,9 +22,16 @@ export default function Nav() {
   return (
     <nav className="navbar navbar-expand-sm navbar-light bg-light">
       <div className="d-flex justify-content-between w-100">
-        <Link className="navbar-brand text-primary font-weight-bold" to="/">
+        <div
+          className="navbar-brand text-primary font-weight-bold btn m-0 p-0"
+          onClick={() => {
+            if (history.location.pathname !== "/") history.push("/");
+          }}
+        >
           Tickets App
-        </Link>
+        </div>
+        {/* <Link className="navbar-brand text-primary font-weight-bold" to="/">
+        </Link> */}
         <div>
           <button
             className="btn btn-outline-primary round-btn"

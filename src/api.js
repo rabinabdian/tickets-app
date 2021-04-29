@@ -32,9 +32,8 @@ export async function api(endpoint, { body, method } = {}) {
     }
 
     throw new Error(response.statusText);
-  } catch (error) {
-    console.error(error);
-    return Promise.reject(error.message ? error.message : data);
+  } catch ({ response }) {
+    return Promise.reject(response.data.error ? response.data.error : data);
   }
 }
 

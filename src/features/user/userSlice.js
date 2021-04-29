@@ -19,7 +19,6 @@ export const registerUser = createAsyncThunk(
     const response = await api.post({ endpoint: "/user/register", body });
     if (!response.error) localStorage.setItem("token", response.token);
 
-    console.log(response);
     return response;
   }
 );

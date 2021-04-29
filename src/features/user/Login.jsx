@@ -1,10 +1,9 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
-import { Redirect } from "react-router-dom";
 
-import { loginUser, selectUser } from "./userSlice";
+import { loginUser } from "./userSlice";
 
 import "./styles/loginForm.scss";
 
@@ -19,9 +18,20 @@ const loginSchema = yup.object().shape({
 export default function Login({ history }) {
   console.log("Login render");
   const dispatch = useDispatch();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = values => {
-    dispatch(loginUser(values));
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
+
+  const handleLogin = async values => {
+    setLoading(true);
+    const result = await dispatch(loginUser(values));
+    setLoading(false);
+    if (result.error) setError(result.error.message);
   };
 
   return (
@@ -41,7 +51,7 @@ export default function Login({ history }) {
               <h2 className="text-center mb-2">Login</h2>
               <FormFieldContainer
                 name="email"
-                loading={false}
+                loading={loading}
                 placeholder="Email"
                 errors={errors}
                 touched={touched}
@@ -49,7 +59,7 @@ export default function Login({ history }) {
               <FormFieldContainer
                 name="password"
                 type={values.showPassword ? "text" : "password"}
-                loading={false}
+                loading={loading}
                 placeholder="Password"
                 errors={errors}
                 touched={touched}
@@ -60,7 +70,7 @@ export default function Login({ history }) {
                     name="showPassword"
                     type="checkbox"
                     className="form-check-input"
-                    disabled={false}
+                    disabled={loading}
                   />
                 </div>
               </FormFieldContainer>
@@ -68,18 +78,16 @@ export default function Login({ history }) {
               <div className="d-flex flex-column align-items-center">
                 <FormButton
                   type={"submit"}
-                  loading={false}
+                  loading={loading}
                   color={"btn-primary"}
                   btnText={"Login"}
                 />
 
-                <div className="alert text-danger p-0 form-error">
-                  errors view
-                </div>
+                <div className="alert text-danger p-0 form-error">{error}</div>
 
                 <div className="mb-1">dont have an acount?</div>
                 <FormButton
-                  loading={false}
+                  loading={loading}
                   color={"btn-outline-primary"}
                   btnText={"Sign up"}
                   onClick={() => history.push("/signup")}

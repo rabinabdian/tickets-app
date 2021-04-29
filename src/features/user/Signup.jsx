@@ -1,10 +1,9 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 
-import { registerUser, selectUser } from "./userSlice";
+import { registerUser } from "./userSlice";
 
 import "./styles/loginForm.scss";
 
@@ -52,8 +51,22 @@ export default function Signup({ history }) {
   console.log("Signup render");
   const dispatch = useDispatch();
 
-  const handleSignUp = values => {
-    dispatch(registerUser(values));
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
+
+  const handleSignUp = async values => {
+    setLoading(true);
+    const result = await dispatch(registerUser(values));
+    setLoading(false);
+    if (result.error) {
+      setError(result.error.message);
+    }
   };
 
   return (
@@ -75,21 +88,21 @@ export default function Signup({ history }) {
               <h2 className="text-center mb-2">Sign up</h2>
               <FormFieldContainer
                 name="firstName"
-                loading={false}
+                loading={loading}
                 placeholder="First name"
                 errors={errors}
                 touched={touched}
               />
               <FormFieldContainer
                 name="lastName"
-                loading={false}
+                loading={loading}
                 placeholder="Last name"
                 errors={errors}
                 touched={touched}
               />
               <FormFieldContainer
                 name="email"
-                loading={false}
+                loading={loading}
                 placeholder="Email"
                 errors={errors}
                 touched={touched}
@@ -97,7 +110,7 @@ export default function Signup({ history }) {
               <FormFieldContainer
                 name="password"
                 type="password"
-                loading={false}
+                loading={loading}
                 placeholder="Password"
                 errors={errors}
                 touched={touched}
@@ -105,24 +118,22 @@ export default function Signup({ history }) {
               <FormFieldContainer
                 name="passwordConfirmation"
                 type="password"
-                loading={false}
+                loading={loading}
                 placeholder="Confirm password"
                 errors={errors}
                 touched={touched}
               />
 
               <div className="d-flex flex-column align-items-center">
-                <div className="alert text-danger p-0 form-error">
-                  errors view
-                </div>
+                <div className="alert text-danger p-0 form-error">{error}</div>
                 <FormButton
                   type={"submit"}
-                  loading={false}
+                  loading={loading}
                   color={"btn-primary"}
                   btnText={"Sign up"}
                 />
                 <FormButton
-                  loading={false}
+                  loading={loading}
                   color={"btn-outline-primary"}
                   btnText={"Back"}
                   onClick={() => history.push("/login")}

@@ -5,28 +5,27 @@ import TicketsList from "../features/tickets/TicketsList";
 import { selectUser } from "../features/user/userSlice";
 
 export default function LandingPage() {
+  console.log("LandingPage render");
   const user = useSelector(selectUser);
-
   return (
-    <>
-      <div className="d-flex ml-3 mt-1">
-        <h5>
-          {/* TODO remove after done */}
-          {user && (
+    user && (
+      <>
+        <div className="d-flex ml-3 mt-1">
+          <h5>
             <>
               Hello{" "}
               <span className="text-primary">{`${user.firstName} ${user.lastName}`}</span>
             </>
-          )}
-        </h5>
-      </div>
-
-      <h3 className="mt-2">Home page</h3>
-      <div className="container">
-        <div className="row justify-content-center">
-          <TicketsList />
+          </h5>
         </div>
-      </div>
-    </>
+
+        <h3 className="mt-2">Home page</h3>
+        <div className="container">
+          <div className="row justify-content-center">
+            <TicketsList />
+          </div>
+        </div>
+      </>
+    )
   );
 }

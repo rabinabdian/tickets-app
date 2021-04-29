@@ -34,7 +34,15 @@ export const fetchTicket = createAsyncThunk(
 // create new ticket
 export const addNewTicket = createAsyncThunk(
   "tickets/addNewTicket",
-  async ({ body }) => await api.post({ endpoint: "/ticket/create", body })
+  async ({ body }) => {
+    const response = await api.post({ endpoint: "/ticket/create", body });
+    // await new Promise(res => {
+    //   setTimeout(() => {
+    //     res();
+    //   }, 3000);
+    // });
+    return response;
+  }
 );
 
 // update exist ticket
