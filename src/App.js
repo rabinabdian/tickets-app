@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.scss";
 import {
   BrowserRouter as Router,
@@ -5,33 +6,40 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { selectUser } from "./features/user/userSlice";
+
 import ProtectedRoute from "./ProtectedRoute";
 
 import Nav from "./components/Nav";
-import HomePage from "./components/HomePage";
-import TicketEdit from "./components/editTicketsComponenets/TicketEdit";
-import Login from "./components/userController/Login";
-import Signup from "./components/userController/Signup";
-import TicketView from "./components/TicketView";
+import LandingPage from "./components/LandingPage";
+import TicketEdit from "./features/tickets/ticketEdit/TicketEdit";
+import Login from "./features/user/Login";
+import Signup from "./features/user/Signup";
+import TicketView from "./features/tickets/TicketView";
 
 function App() {
+  console.log("App render");
+  const user = useSelector(selectUser);
+
   return (
     <Router>
       <div className="App">
-        <ProtectedRoute path="/" component={Nav} />
+        {user && <Nav />}
         <Switch>
-          <Route path="/login" exact component={Login} />
-          <Route path="/signup" exact component={Signup} />
-          <ProtectedRoute path="/" exact component={HomePage} />
+          {!user && <Route path="/login" exact component={Login} />}
+          {!user && <Route path="/signup" exact component={Signup} />}
+          <ProtectedRoute path="/" exact component={LandingPage} />
           <ProtectedRoute
             exact
-            path="/ticket/edit/:id"
+            path="/ticket/edit/:ticketId"
             component={TicketEdit}
           />
           <ProtectedRoute exact path="/ticket/create" component={TicketEdit} />
           <ProtectedRoute
             exact
-            path="/ticket/view/:id"
+            path="/ticket/view/:ticketId"
             component={TicketView}
           />
           <Route path="*" component={() => <Redirect to="/" />} />

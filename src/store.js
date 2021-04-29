@@ -1,7 +1,10 @@
-import { createStore } from "redux";
-import allReducers from "./reducers/";
+import { configureStore } from "@reduxjs/toolkit";
+import ticketsReducer from "./features/tickets/ticketsSlice";
+import userReducer from "./features/user/userSlice";
 
-export default createStore(
-  allReducers,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+export default configureStore({
+  reducer: {
+    tickets: ticketsReducer,
+    user: userReducer,
+  },
+});

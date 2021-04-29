@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router";
+import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
-import "../styles/loginForm.scss";
 
-import FormFieldContainer from "../formReusable/FormFieldContainer";
-import FormButton from "../formReusable/FormButton";
+import { registerUser } from "./userSlice";
 
-import { signup } from "../../services/user.service";
+import "./styles/loginForm.scss";
+
+import FormFieldContainer from "../../components/formReusable/FormFieldContainer";
+import FormButton from "../../components/formReusable/FormButton";
 
 const signUpSchema = yup.object().shape({
   firstName: yup
@@ -46,35 +46,30 @@ const signUpSchema = yup.object().shape({
   }),
 });
 
-export default function Signup(props) {
-  const [generalErorrs, setGeneralErrors] = useState("");
-  const [response, setResponse] = useState();
+// TODO to lower case the email in server !!!!
+export default function Signup({ history }) {
+  console.log("Signup render");
+  const dispatch = useDispatch();
+
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch();
-  const { isLoggedIn } = useSelector(state => state);
-
-  const handleSignUp = values => {
-    setLoading(true);
-    setResponse(
-      signup(dispatch)(values)
-        .then(res => setResponse(res))
-        .finally(() => setLoading(false))
-    );
-  };
-
   useEffect(() => {
-    if (response && response.status > 200) {
-      setGeneralErrors(response.message);
-    }
     return () => {
       setLoading(false);
     };
-  }, [response]);
+  }, []);
 
-  return isLoggedIn || localStorage.getItem("token") ? (
-    <Redirect to="/" />
-  ) : (
+  const handleSignUp = async values => {
+    setLoading(true);
+    const result = await dispatch(registerUser(values));
+    setLoading(false);
+    if (result.error) {
+      setError(result.error.message);
+    }
+  };
+
+  return (
     <div className="d-flex justify-content-center align-items-start w-100 h-100">
       <Formik
         initialValues={{
@@ -130,9 +125,7 @@ export default function Signup(props) {
               />
 
               <div className="d-flex flex-column align-items-center">
-                <div className="alert text-danger p-0 form-error">
-                  {generalErorrs}
-                </div>
+                <div className="alert text-danger p-0 form-error">{error}</div>
                 <FormButton
                   type={"submit"}
                   loading={loading}
@@ -143,7 +136,7 @@ export default function Signup(props) {
                   loading={loading}
                   color={"btn-outline-primary"}
                   btnText={"Back"}
-                  onClick={() => props.history.push("/login")}
+                  onClick={() => history.push("/login")}
                 />
               </div>
             </div>

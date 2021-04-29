@@ -1,68 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { getTicket } from "../api";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { selectTicketById } from "./ticketsSlice";
 
-export default function TicketView({
-  location: { ticket, pathname },
-  history,
-}) {
-  const [ticketData, setTicketData] = useState(ticket);
-  const [response, setResponse] = useState();
-  const [loading, setLoading] = useState(false);
-  const path = pathname
-    .split("/")
-    .filter(c => c)
-    .pop();
+export default function TicketView({ match, history }) {
+  const { ticketId } = match.params;
+  const ticket = useSelector(state => selectTicketById(state, ticketId));
 
-  useEffect(() => {
-    if (!ticketData) {
-      setLoading(true);
-      getTicket(path).then(data => {
-        setResponse(data);
-      });
-    }
-  }, [ticketData]);
-
-  useEffect(() => {
-    if (response?.status === 200) {
-      setTicketData(response?.data);
-      setLoading(false);
-    } else if (response?.status === 403) {
-      history.push("/");
-      localStorage.removeItem("token");
-    }
-
-    return () => {
-      setLoading(false);
-    };
-  }, [response]);
-
-  return (
+  return !ticket ? (
+    <Redirect to="/" />
+  ) : (
     <div className="h-100 p-3">
       <h3 className="h-100">View Ticket</h3>
       {
         <div className="d-flex justify-content-center">
           <div
             className="card ticket-edit-card p-3"
-            style={{ boxShadow: `0px 0px 6px 0px ${ticketData?.color}` }}
+            style={{ boxShadow: `0px 0px 6px 0px ${ticket.color}` }}
           >
             <div className="form-container body d-flex flex-column align-items-start px-2 h-100">
               <div className="d-flex align-items-center mb-5">
                 <h5 className="form-label text-left ml-1">Title:</h5>
-                <h6 className="ml-3 text-break">{ticketData?.title}</h6>
+                <h6 className="ml-3 text-break">{ticket.title}</h6>
               </div>
-              <div className="d-flex w-100 align-items-center mb-5">
+              <div className="d-flex w-100 align-items-start mb-5">
                 <h5 className="form-label text-left ml-1">Body: </h5>
-                <h6 className="ml-3 text-break">{ticketData?.body}</h6>
+                <h6 className="ml-3 text-break">{ticket.body}</h6>
               </div>
               <div className="d-flex w-100 align-items-center mb-5">
                 <h5 className="form-label text-left ml-1">Priority: </h5>
-                <h6 className="ml-3 text-break">{ticketData?.priority}</h6>
+                <h5 className="ml-3">{ticket.priority}</h5>
               </div>
 
               <div className="d-flex w-100 align-items-center mb-5">
-                <h5 className="form-label text-left ml-1">is read?</h5>
-                <h6 className="ml-3 text-break">
-                  {ticketData?.isRead ? "yes" : "no"}
+                <h5 className="form-label text-left ml-1 badge badge-success">
+                  is read?
+                </h5>
+                <h6 className="ml-3 d-flex">
+                  {ticket.read ? (
+                    <i className="fas fa-check text-success fa-lg"></i>
+                  ) : (
+                    <i className="fas fa-times text-danger fa-lg" />
+                  )}
                 </h6>
               </div>
 
@@ -70,15 +49,15 @@ export default function TicketView({
                 <h5 className="form-label text-left ml-1">Color: </h5>
                 <h6
                   className="ml-3 text-break"
-                  style={{ color: ticketData?.color }}
+                  style={{ color: ticket?.color }}
                 >
-                  {ticketData?.color}
+                  {ticket?.color}
                 </h6>
               </div>
 
               <div className="d-flex w-100 align-items-center mb-5">
                 <h5 className="form-label text-left ml-1">Icon</h5>
-                <h6 className="ml-3 text-break">{ticketData?.icon}</h6>
+                <h6 className="ml-3 text-break">{ticket?.icon}</h6>
               </div>
 
               <div className="d-flex justify-content-around w-100">
@@ -91,7 +70,7 @@ export default function TicketView({
                 </button>
                 <button
                   className="btn btn-secondary round-btn control-btn"
-                  onClick={() => history.push(`/ticket/edit/${ticketData?.id}`)}
+                  onClick={() => history.push(`/ticket/edit/${ticket?.id}`)}
                   type="button"
                 >
                   Edit

@@ -1,51 +1,47 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Form, Field } from "formik";
-import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-import "../styles/loginForm.scss";
 
-import { login } from "../../services/user.service";
-import { Redirect } from "react-router";
-import FormFieldContainer from "../formReusable/FormFieldContainer";
-import FormButton from "../formReusable/FormButton";
+import { loginUser } from "./userSlice";
+
+import "./styles/loginForm.scss";
+
+import FormFieldContainer from "../../components/formReusable/FormFieldContainer";
+import FormButton from "../../components/formReusable/FormButton";
 
 const loginSchema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
 });
 
-export default function Login(props) {
-  const [generalErorrs, setGeneralErrors] = useState("");
-  const [response, setResponse] = useState();
+export default function Login({ history }) {
+  console.log("Login render");
+  const dispatch = useDispatch();
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch();
-  const { isLoggedIn } = useSelector(state => state);
-
-  const handleLogin = values => {
-    setLoading(true);
-    setResponse(
-      login(dispatch)(values)
-        .then(res => setResponse(res))
-        .finally(() => setLoading(false))
-    );
-  };
-
   useEffect(() => {
-    if (response && response.status > 200) {
-      setGeneralErrors(response.message);
-    }
     return () => {
       setLoading(false);
     };
-  }, [response]);
+  }, []);
 
-  return isLoggedIn || localStorage.getItem("token") ? (
-    <Redirect to="/" />
-  ) : (
+  const handleLogin = async values => {
+    setLoading(true);
+    const result = await dispatch(loginUser(values));
+    setLoading(false);
+    if (result.error) setError(result.error.message);
+  };
+
+  return (
     <div className="d-flex justify-content-center align-items-start w-100 h-100">
       <Formik
-        initialValues={{ email: "", password: "", showPassword: false }}
+        initialValues={{
+          email: "email@gmail.com",
+          password: "1234",
+          showPassword: false,
+        }}
         validationSchema={loginSchema}
         onSubmit={values => handleLogin(values)}
       >
@@ -87,16 +83,14 @@ export default function Login(props) {
                   btnText={"Login"}
                 />
 
-                <div className="alert text-danger p-0 form-error">
-                  {generalErorrs}
-                </div>
+                <div className="alert text-danger p-0 form-error">{error}</div>
 
                 <div className="mb-1">dont have an acount?</div>
                 <FormButton
                   loading={loading}
                   color={"btn-outline-primary"}
                   btnText={"Sign up"}
-                  onClick={() => props.history.push("/signup")}
+                  onClick={() => history.push("/signup")}
                 />
               </div>
             </div>

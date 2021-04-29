@@ -1,34 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { logout } from "../services/user.service";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 
+import { logoutUser, selectUser } from "../features/user/userSlice";
+
+// TODO to disable all the buttons on loading or panding
 export default function Nav() {
-  const [loading, setLoading] = useState(false);
+  console.log("Nav render");
   const dispatch = useDispatch();
+  const history = useHistory();
+  const user = useSelector(selectUser);
 
   const handleLogout = () => {
-    setLoading(true);
-    logout(dispatch).finally(() => setLoading(false));
+    dispatch(logoutUser());
   };
 
   useEffect(() => {
-    return () => {
-      setLoading(false);
-    };
-  }, []);
+    if (!user) history.push("/login");
+  }, [user, history]);
 
   return (
     <nav className="navbar navbar-expand-sm navbar-light bg-light">
       <div className="d-flex justify-content-between w-100">
-        <Link className="navbar-brand text-primary font-weight-bold" to="/">
+        <div
+          className="navbar-brand text-primary font-weight-bold btn m-0 p-0"
+          onClick={() => {
+            if (history.location.pathname !== "/") history.push("/");
+          }}
+        >
           Tickets App
-        </Link>
+        </div>
+        {/* <Link className="navbar-brand text-primary font-weight-bold" to="/">
+        </Link> */}
         <div>
           <button
             className="btn btn-outline-primary round-btn"
             onClick={() => handleLogout()}
-            disabled={loading}
           >
             Log out
           </button>
