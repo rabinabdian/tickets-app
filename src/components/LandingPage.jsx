@@ -1,8 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
 import TicketsList from "../features/tickets/TicketsList";
-import { selectUser } from "../features/user/userSlice";
 
 export default function LandingPage({ user }) {
   return (
