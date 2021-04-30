@@ -46,7 +46,6 @@ const signUpSchema = yup.object().shape({
   }),
 });
 
-// TODO to lower case the email in server !!!!
 export default function Signup({ history }) {
   const dispatch = useDispatch();
 
@@ -75,8 +74,8 @@ export default function Signup({ history }) {
           firstName: "",
           lastName: "",
           email: "",
-          password: "Aaaaaaaa1!",
-          passwordConfirmation: "Aaaaaaaa1!",
+          password: "",
+          passwordConfirmation: "",
         }}
         validationSchema={signUpSchema}
         onSubmit={values => handleSignUp(values)}

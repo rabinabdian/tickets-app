@@ -21,7 +21,6 @@ import TicketView from "./features/tickets/TicketView";
 
 function App() {
   const user = useSelector(selectUser);
-
   return (
     <Router>
       <div className="App">
@@ -29,7 +28,11 @@ function App() {
         <Switch>
           {!user && <Route path="/login" exact component={Login} />}
           {!user && <Route path="/signup" exact component={Signup} />}
-          <ProtectedRoute path="/" exact component={LandingPage} />
+          <ProtectedRoute
+            path="/"
+            exact
+            component={() => <LandingPage user={user} />}
+          />
           <ProtectedRoute
             exact
             path="/ticket/edit/:ticketId"

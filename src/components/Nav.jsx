@@ -1,22 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { logoutUser, selectUser } from "../features/user/userSlice";
+import { resetTickets } from "../features/tickets/ticketsSlice";
 
-// TODO to disable all the buttons on loading or panding
 export default function Nav() {
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector(selectUser);
+  const [loading, setLoading] = useState(false);
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
+  const handleLogout = async () => {
+    setLoading(true);
+    await dispatch(logoutUser());
+    dispatch(resetTickets());
+    setLoading(false);
   };
 
   useEffect(() => {
     if (!user) history.push("/login");
   }, [user, history]);
+
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  });
 
   return (
     <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -35,6 +45,7 @@ export default function Nav() {
           <button
             className="btn btn-outline-primary round-btn"
             onClick={() => handleLogout()}
+            disabled={loading}
           >
             Log out
           </button>

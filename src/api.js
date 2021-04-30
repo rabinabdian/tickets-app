@@ -8,7 +8,6 @@ const URL = `${URL_PROTOCOL}://${URL_DOMAIN}:${URL_PORT}`;
 const isHttpsStatusOK = status => status >= 200 && status < 300;
 
 export async function api(endpoint, { body, method } = {}) {
-  // TODO localstorage expensive!!!!!!! have to store the token in store and use it from there
   const token = localStorage.getItem("token");
   if (method === "GET" && !token) return null;
   const headers = { "Content-Type": "application/json" };
@@ -25,15 +24,21 @@ export async function api(endpoint, { body, method } = {}) {
   let data;
   try {
     const response = await axios(config);
-    data = response.data;
 
+    data = response.data;
     if (isHttpsStatusOK(response.status)) {
       return data;
     }
 
     throw new Error(response.statusText);
-  } catch ({ response }) {
-    return Promise.reject(response.data.error ? response.data.error : data);
+  } catch (error) {
+    const { response } = error;
+
+    let errorToReturn = response
+      ? Promise.reject(response.data.error ? response.data.error : data)
+      : Promise.reject(error.message ? error.message : data);
+
+    return errorToReturn;
   }
 }
 

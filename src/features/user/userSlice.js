@@ -76,7 +76,7 @@ const userSlice = createSlice({
     },
 
     [logoutUser.fulfilled]: state => {
-      state.status = "succeeded";
+      state.status = "idle";
       state.data = null;
     },
   },

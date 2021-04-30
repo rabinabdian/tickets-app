@@ -58,11 +58,12 @@ export const deleteTicket = createAsyncThunk(
 );
 
 // ***** Slice *****
-// TODO add the entire async thunks to extra reducers!
 const ticketSlice = createSlice({
   name: "tickets",
   initialState,
-  reducers: {},
+  reducers: {
+    resetTickets: state => initialState,
+  },
   extraReducers: {
     [fetchTickets.pending]: state => {
       state.status = "loading";
@@ -117,6 +118,8 @@ const ticketSlice = createSlice({
 });
 
 export default ticketSlice.reducer;
+
+export const { resetTickets } = ticketSlice.actions;
 
 export const {
   selectAll: selectAllTickets,

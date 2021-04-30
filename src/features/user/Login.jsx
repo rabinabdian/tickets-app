@@ -37,8 +37,8 @@ export default function Login({ history }) {
     <div className="d-flex justify-content-center align-items-start w-100 h-100">
       <Formik
         initialValues={{
-          email: "email@gmail.com",
-          password: "1234",
+          email: "",
+          password: "",
           showPassword: false,
         }}
         validationSchema={loginSchema}

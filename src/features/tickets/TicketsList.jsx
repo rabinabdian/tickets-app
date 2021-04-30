@@ -13,7 +13,6 @@ export default function TicketsList() {
   const tickets = useSelector(selectAllTickets);
 
   const ticketsStatus = useSelector(state => state.tickets.status);
-
   useEffect(() => {
     (async () => {
       if (ticketsStatus === "idle") {
