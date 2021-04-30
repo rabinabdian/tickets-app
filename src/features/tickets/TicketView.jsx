@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { selectTicketById } from "./ticketsSlice";
 
+import { priorityColors } from "../../components/formReusable/priorityColors";
+
 export default function TicketView({ match, history }) {
   const { ticketId } = match.params;
   const ticket = useSelector(state => selectTicketById(state, ticketId));
@@ -25,24 +27,30 @@ export default function TicketView({ match, history }) {
               </div>
               <div className="d-flex w-100 align-items-start mb-5">
                 <h5 className="form-label text-left ml-1">Body: </h5>
-                <h6 className="ml-3 text-break">{ticket.body}</h6>
+                <h6 className="ml-3 text-break text-left">{ticket.body}</h6>
               </div>
               <div className="d-flex w-100 align-items-center mb-5">
                 <h5 className="form-label text-left ml-1">Priority: </h5>
-                <h5 className="ml-3">{ticket.priority}</h5>
+                <h5
+                  className={`ml-3 priority-btn badge-pill badge-${
+                    priorityColors[ticket.priority]
+                  }`}
+                >
+                  {ticket.priority}
+                </h5>
               </div>
 
               <div className="d-flex w-100 align-items-center mb-5">
-                <h5 className="form-label text-left ml-1 badge badge-success">
-                  is read?
+                <h5 className="form-label text-left ml-1">Status:</h5>
+                <h5 className="ml-3">
+                  <span
+                    className={`form-label text-left ml-1 badge badge-pill badge-${
+                      ticket.read ? "success" : "secondary"
+                    } `}
+                  >
+                    {ticket.read ? "Read" : "Not read"}
+                  </span>
                 </h5>
-                <h6 className="ml-3 d-flex">
-                  {ticket.read ? (
-                    <i className="fas fa-check text-success fa-lg"></i>
-                  ) : (
-                    <i className="fas fa-times text-danger fa-lg" />
-                  )}
-                </h6>
               </div>
 
               <div className="d-flex w-100 align-items-center mb-5">

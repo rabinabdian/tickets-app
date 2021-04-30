@@ -26,9 +26,10 @@
     width: 2.5rem;
     border-radius: 100em;
     color: black;
-    &:hover {
-      opacity: 0.6;
-    }
+  }
+
+  .hoverable:hover {
+    opacity: 0.6;
   }
 
   .read-panel {

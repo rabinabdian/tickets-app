@@ -1,5 +1,6 @@
 import React from "react";
 import { Field } from "formik";
+import { priorityColors } from "../../../components/formReusable/priorityColors";
 
 export default function PriorityPanel({
   priority,
@@ -7,35 +8,32 @@ export default function PriorityPanel({
   handlePriorityClick,
   disabled,
 }) {
-  const createPriorityButton = ({ value, color }) => {
-    return (
-      <Field
-        id="priority"
-        className="btn border priority-btn ml-2"
-        type="button"
-        value={value}
-        style={
-          priority === value
-            ? {
-                background: color,
-              }
-            : null
-        }
-        onClick={event => {
-          setFieldValue("priority", handlePriorityClick(event));
-        }}
-        disabled={disabled}
-      />
-    );
-  };
+  const createPriorityButton = colorNum => (
+    <Field
+      key={colorNum}
+      id="priority"
+      className={`btn border priority-btn ml-2 badge-${
+        priority === colorNum ? priorityColors[colorNum] : "light"
+      } badge-pill hoverable`}
+      type="button"
+      value={colorNum}
+      onClick={event => {
+        setFieldValue("priority", handlePriorityClick(event));
+      }}
+      disabled={disabled}
+    />
+  );
 
   return (
     <div className="input-group">
-      {createPriorityButton({ value: "1", color: "#4fb9fa" })}
+      {Object.keys(priorityColors).map(colorNum =>
+        createPriorityButton(colorNum)
+      )}
+      {/* {createPriorityButton({ value: "1", color: "#4fb9fa" })}
       {createPriorityButton({ value: "2", color: "#42ef37" })}
       {createPriorityButton({ value: "3", color: "#f2ed06" })}
       {createPriorityButton({ value: "4", color: "#fe9800" })}
-      {createPriorityButton({ value: "5", color: "#d81c1c" })}
+      {createPriorityButton({ value: "5", color: "#d81c1c" })} */}
     </div>
   );
 }

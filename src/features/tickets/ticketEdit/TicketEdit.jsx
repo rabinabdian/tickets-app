@@ -14,7 +14,7 @@ import "../styles/TicketEdit.scss";
 
 const ticketEditSchema = yup.object().shape({
   title: yup.string().required().max(60),
-  body: yup.string(),
+  body: yup.string().max(255),
 });
 
 export default function TicketEdit({ match, history }) {
@@ -28,7 +28,7 @@ export default function TicketEdit({ match, history }) {
 
   const [priority, setPriority] = useState(ticket?.priority?.toString());
   const [colorPicked, setColorPicked] = useState(ticket?.color);
-  const [loading, setLoading] = useState(ticket?.color);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async values => {
     setLoading(true);
@@ -41,7 +41,7 @@ export default function TicketEdit({ match, history }) {
     if (result.error) {
       setError(result.error.message);
     } else if (ticketsStatus === "succeeded") {
-      history.push("/");
+      history.push(`/ticket/view/${ticketId}`);
     }
   };
 
@@ -96,6 +96,11 @@ export default function TicketEdit({ match, history }) {
                     component="textarea"
                     disabled={loading}
                   />
+                  {errors.body && touched.body && (
+                    <div className="alert text-danger p-0 m-0">
+                      {errors.body}
+                    </div>
+                  )}
                 </div>
                 <div className="w-100 mb-5">
                   <h5 className="form-label text-left ml-1">Priority</h5>
