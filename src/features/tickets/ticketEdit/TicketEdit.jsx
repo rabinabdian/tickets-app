@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
@@ -30,6 +30,12 @@ export default function TicketEdit({ match, history }) {
   const [priority, setPriority] = useState(ticket?.priority?.toString());
   const [colorPicked, setColorPicked] = useState(ticket?.color);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
 
   const handleSubmit = async values => {
     setLoading(true);

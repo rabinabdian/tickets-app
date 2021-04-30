@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { deleteTicket } from "../ticketsSlice";
@@ -22,6 +22,12 @@ export default function DeleteModal({ ticketId, history }) {
       history.push("/");
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setModalView(false);
+    };
+  }, []);
 
   return (
     <>
