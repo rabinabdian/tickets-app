@@ -48,7 +48,6 @@ const signUpSchema = yup.object().shape({
 
 // TODO to lower case the email in server !!!!
 export default function Signup({ history }) {
-  console.log("Signup render");
   const dispatch = useDispatch();
 
   const [error, setError] = useState("");

@@ -20,7 +20,6 @@ import Signup from "./features/user/Signup";
 import TicketView from "./features/tickets/TicketView";
 
 function App() {
-  console.log("App render");
   const user = useSelector(selectUser);
 
   return (

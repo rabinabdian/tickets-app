@@ -5,7 +5,6 @@ import TicketsList from "../features/tickets/TicketsList";
 import { selectUser } from "../features/user/userSlice";
 
 export default function LandingPage() {
-  console.log("LandingPage render");
   const user = useSelector(selectUser);
   return (
     user && (

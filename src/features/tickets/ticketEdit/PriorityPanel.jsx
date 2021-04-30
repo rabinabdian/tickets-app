@@ -25,7 +25,7 @@ export default function PriorityPanel({
   );
 
   return (
-    <div className="input-group">
+    <div className="input-group ml-3">
       {Object.keys(priorityColors).map(colorNum =>
         createPriorityButton(colorNum)
       )}

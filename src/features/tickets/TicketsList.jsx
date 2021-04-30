@@ -7,7 +7,6 @@ import { fetchTickets, selectAllTickets } from "./ticketsSlice";
 import Ticket from "./Ticket";
 
 export default function TicketsList() {
-  console.log("TicketsList render");
   const dispatch = useDispatch();
   const [error, setError] = useState("");
 

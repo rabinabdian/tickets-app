@@ -16,7 +16,6 @@ const loginSchema = yup.object().shape({
 });
 
 export default function Login({ history }) {
-  console.log("Login render");
   const dispatch = useDispatch();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);

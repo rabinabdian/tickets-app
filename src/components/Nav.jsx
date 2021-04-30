@@ -6,7 +6,6 @@ import { logoutUser, selectUser } from "../features/user/userSlice";
 
 // TODO to disable all the buttons on loading or panding
 export default function Nav() {
-  console.log("Nav render");
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector(selectUser);

@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
+import Picker from "emoji-picker-react";
+import { TwitterPicker } from "react-color";
+import { Redirect } from "react-router-dom";
 
 import { selectTicketById, updateTicket, addNewTicket } from "../ticketsSlice";
 
 import PriorityPanel from "./PriorityPanel";
 import DeleteModal from "./DeleteModal";
-import { TwitterPicker } from "react-color";
-import Picker from "emoji-picker-react";
 
 import "../styles/TicketEdit.scss";
 
@@ -22,7 +23,7 @@ export default function TicketEdit({ match, history }) {
   const { ticketId } = match.params;
   const isEdit = match.url.includes("edit");
 
-  let ticket = useSelector(state => selectTicketById(state, ticketId));
+  const ticket = useSelector(state => selectTicketById(state, ticketId));
   const ticketsStatus = useSelector(state => state.tickets.status);
   const [error, setError] = useState("");
 
@@ -45,7 +46,9 @@ export default function TicketEdit({ match, history }) {
     }
   };
 
-  return (
+  return isEdit && !ticket ? (
+    <Redirect to="/" />
+  ) : (
     <div className="h-100 p-3">
       <h3 className="h-100">{isEdit ? "Edit" : "Create"} Ticket</h3>
 
@@ -72,7 +75,6 @@ export default function TicketEdit({ match, history }) {
                 <div className="w-100 mb-5">
                   <div className="d-flex flex-row align-items-center justify-content-between">
                     <h5 className="form-label text-left ml-1">Title</h5>
-
                     {isEdit && (
                       <DeleteModal ticketId={ticket?.id} history={history} />
                     )}
@@ -102,7 +104,7 @@ export default function TicketEdit({ match, history }) {
                     </div>
                   )}
                 </div>
-                <div className="w-100 mb-5">
+                <div className="d-flex w-100 mb-5 align-items-center">
                   <h5 className="form-label text-left ml-1">Priority</h5>
                   <PriorityPanel
                     priority={priority}
@@ -116,11 +118,11 @@ export default function TicketEdit({ match, history }) {
                 </div>
 
                 <div className="w-100 mb-5 d-flex justify-content-start align-items-center">
-                  <h5 className="form-label text-left ml-1">is read?</h5>
+                  <h5 className="form-label text-left ml-1">Read</h5>
                   <Field
                     name="read"
                     type="checkbox"
-                    className="form-checkbox ml-3"
+                    className="form-checkbox ml-3 mr-2 mb-2 read-panel"
                     disabled={loading}
                   />
                 </div>
@@ -161,11 +163,11 @@ export default function TicketEdit({ match, history }) {
                 </div>
 
                 <div className="w-100 mb-4">
-                  <div className="d-flex">
+                  <div className="d-flex align-items-center">
                     <h5 className="form-label text-left ml-1">Icon</h5>
                     <Field
                       name="icon"
-                      className="form-control ml-2 mb-2"
+                      className="form-control ml-2 mb-2 border-0"
                       disabled={loading}
                       value={values.icon}
                       style={{ width: "50px" }}

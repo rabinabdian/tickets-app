@@ -32,7 +32,7 @@ export default function TicketView({ match, history }) {
               <div className="d-flex w-100 align-items-center mb-5">
                 <h5 className="form-label text-left ml-1">Priority: </h5>
                 <h5
-                  className={`ml-3 priority-btn badge-pill badge-${
+                  className={`ml-3 border priority-btn badge-pill badge-${
                     priorityColors[ticket.priority]
                   }`}
                 >
@@ -56,7 +56,7 @@ export default function TicketView({ match, history }) {
               <div className="d-flex w-100 align-items-center mb-5">
                 <h5 className="form-label text-left ml-1">Color: </h5>
                 <h6
-                  className="ml-3 text-break"
+                  className="ml-3 font-weight-bold"
                   style={{ color: ticket?.color }}
                 >
                   {ticket?.color}
